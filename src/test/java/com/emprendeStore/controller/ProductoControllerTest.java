@@ -77,7 +77,7 @@ public class ProductoControllerTest {
         when(productoService.save(any(ProductoRequestDTO.class))).thenReturn(responseMock);
 
         // Act
-        ResponseEntity<ProductoResponseDTO> responseEntity = productoController.registrarProducto(requestDto);
+        ResponseEntity<ProductoResponseDTO> responseEntity = productoController.saveProducto(requestDto);
 
         // Assert
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());

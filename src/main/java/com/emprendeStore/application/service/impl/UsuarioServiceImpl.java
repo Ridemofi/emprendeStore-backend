@@ -56,13 +56,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         return um.toDto(u);
     }
 
-    @Override
-    public UsuarioResponseDto login(LoginUsuarioRequestDto dto) {
-        Usuario u = ur.findByCorreoOrNomUsu(dto.getIdentificador(), dto.getIdentificador())
-                .orElseThrow(() -> new ErrorNegocio("El usuario o correo no existe"));
-        if (!pe.matches(dto.getPassword(), u.getPassword())) {
-            throw new ErrorNegocio("La contraseña es incorrecta");
-        }
-        return um.toDto(u);
-    }
+
 }

@@ -19,7 +19,6 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
-    // Método para generar la firma clave
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -27,7 +26,7 @@ public class JwtTokenProvider {
 
     // 1. Generar el token JWT
     public String generateToken(Authentication authentication) {
-        String username = authentication.getName(); // Obtiene el correo del usuario autenticado
+        String username = authentication.getName();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
@@ -39,7 +38,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // 2. Obtener el username (correo) del token
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -49,7 +47,6 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    // 3. Validar el token
     public boolean validateToken(String authToken) {
         try {
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);

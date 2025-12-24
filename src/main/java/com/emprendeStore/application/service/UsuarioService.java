@@ -12,5 +12,4 @@ public interface UsuarioService {
     UsuarioResponseDto delete(Long id);
     List<UsuarioResponseDto> listarUsuarios();
     UsuarioResponseDto update(UpdateUsuarioRequestDto dtoUpdate, Long id);
-    UsuarioResponseDto login(LoginUsuarioRequestDto dto);
 }

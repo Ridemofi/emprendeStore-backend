@@ -4,17 +4,17 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class AuthEmprendedorResponseDto {
-    private Long idemp;
-    private String imgemp;
-    private String nombep;
+public class AuthUsuarioResponseDto {
+    private Long id;
+    private String img;
+    private String nombreReal;
+    private String nomUsu;
     private String correo;
-    private String nrocell;
-    private LocalDate fechaingreso;
+    private String nroCel;
+    private LocalDate fechaRegistro;
     private String token;
     private String rol;
     @Builder.Default

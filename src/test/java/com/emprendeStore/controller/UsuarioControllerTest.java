@@ -20,9 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-// CORRECCIÓN: Usamos MockitoExtension para pruebas unitarias puras.
-// Si quisieras usar el contexto de Spring, usarías @WebMvcTest(UsuarioController.class)
-// y @Autowired MockMvc, pero para esto, Mockito puro es más simple y rápido.
+
 @ExtendWith(MockitoExtension.class)
 public class UsuarioControllerTest {
 
@@ -58,7 +56,7 @@ public class UsuarioControllerTest {
         when(usuarioService.save(any(RegisterUsuarioRequestDto.class))).thenReturn(responseMock);
 
         // Act
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.registrarusu(request);
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.saveUsu(request);
 
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -67,22 +65,6 @@ public class UsuarioControllerTest {
         assertEquals("maria_dev", response.getBody().getNomUsu());
     }
 
-    @Test
-    void loginUsuario() {
-        // Arrange
-        LoginUsuarioRequestDto loginRequest = new LoginUsuarioRequestDto("maria@correo.com", "clave456");
-        UsuarioResponseDto responseMock = generarUsuarioResponseDto();
-        when(usuarioService.login(any(LoginUsuarioRequestDto.class))).thenReturn(responseMock);
-
-        // Act
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.login(loginRequest);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(10L, response.getBody().getId());
-        assertEquals("maria@correo.com", response.getBody().getCorreo());
-    }
 
     @Test
     void eliminarUsuario() {

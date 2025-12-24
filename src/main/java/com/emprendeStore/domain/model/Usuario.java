@@ -8,10 +8,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "USUARIO")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Usuario {
     @Id
@@ -37,6 +35,10 @@ public class Usuario {
 
     @Column(name = "PASSWORD", nullable = false, length = 100)
     private String password;
+
+    @Column(name = "ROL", nullable = false, length = 20)
+    @Builder.Default
+    private String rol = "USUARIO";
 
     @CreationTimestamp
     @Column(name = "FECHA_REGISTRO", updatable = false)

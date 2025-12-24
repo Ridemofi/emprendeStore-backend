@@ -36,6 +36,10 @@ public class Emprendedor {
     @Column(name = "PASSWORD", nullable = false, length = 100)
     private String passwordempre;
 
+    @Column(name = "ROL", nullable = false, length = 20)
+    @Builder.Default
+    private String rol = "EMPRENDEDOR";
+
     @CreationTimestamp
     @Column(name = "FECHA_REGISTRO", updatable = false)
     private LocalDate fecharegistroemp;

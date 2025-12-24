@@ -138,48 +138,7 @@ public class UsuarioServiceImpl {
         assertEquals("nuevo@test.com", resultado.getCorreo());
     }
 
-    @Test
-    void login_deberiaRetornarUsuarioSiCredencialesSonCorrectas() {
-        LoginUsuarioRequestDto loginDto = LoginUsuarioRequestDto.builder()
-                .identificador("jesus@test.com")
-                .password("1234")
-                .build();
 
-        Usuario entidad = generarUsuario(1L, "jesus", "jesus@test.com", "encoded1234");
-
-        UsuarioResponseDto responseEsperado = UsuarioResponseDto.builder()
-                .id(1L)
-                .nomUsu("jesus")
-                .correo("jesus@test.com")
-                .build();
-
-        when(usuarioRepo.findByCorreoOrNomUsu("jesus@test.com", "jesus@test.com"))
-                .thenReturn(Optional.of(entidad));
-        when(passwordEncoder.matches("1234", "encoded1234")).thenReturn(true);
-        when(usuarioMapper.toDto(entidad)).thenReturn(responseEsperado);
-
-        UsuarioResponseDto resultado = usuarioServiceImpl.login(loginDto);
-
-        assertEquals("jesus", resultado.getNomUsu());
-    }
-
-    @Test
-    void login_deberiaLanzarExcepcionSiPasswordIncorrecta() {
-        LoginUsuarioRequestDto loginDto = LoginUsuarioRequestDto.builder()
-                .identificador("jesus@test.com")
-                .password("wrong")
-                .build();
-
-        Usuario entidad = generarUsuario(1L, "jesus", "jesus@test.com", "encoded1234");
-
-        when(usuarioRepo.findByCorreoOrNomUsu("jesus@test.com", "jesus@test.com"))
-                .thenReturn(Optional.of(entidad));
-        when(passwordEncoder.matches("wrong", "encoded1234")).thenReturn(false);
-
-        assertThrows(ErrorNegocio.class, () -> usuarioServiceImpl.login(loginDto));
-    }
-
-    // Helpers para reducir código
     private Usuario generarUsuario(Long id, String nomUsu, String correo, String password) {
         return Usuario.builder()
                 .idUsu(id)

@@ -29,8 +29,8 @@ public class ProductoController {
         return ResponseEntity.ok(ps.buscarProductos(txtFiltro, categoria, emprendedor));
     }
 
-    @PostMapping
-    public ResponseEntity<ProductoResponseDTO> registrarProducto(@RequestBody ProductoRequestDTO dto) {
+    @PostMapping("/saveProducto")
+    public ResponseEntity<ProductoResponseDTO> saveProducto(@RequestBody ProductoRequestDTO dto) {
         return new ResponseEntity<>(ps.save(dto), HttpStatus.CREATED);
     }
 }
