@@ -5,8 +5,8 @@ import com.emprendeStore.web.dto.response.EmprendedorResponseDto;
 
 import java.util.List;
 public interface EmprendedorService {
-    EmprendedorResponseDto save(RegisterEmprendedorRequestDto dto);
-    EmprendedorResponseDto delete(Long id);
+    EmprendedorResponseDto saveEmpre(RegisterEmprendedorRequestDto dto);
+    EmprendedorResponseDto deleteEmpre(Long id);
     List<EmprendedorResponseDto> listarEmprePopulares();
     EmprendedorResponseDto obtenerEmpreXId(Long id);
     List<EmprendedorResponseDto>listarAllEmpres();

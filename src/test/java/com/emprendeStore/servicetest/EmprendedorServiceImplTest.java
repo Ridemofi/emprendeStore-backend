@@ -115,7 +115,7 @@ public class EmprendedorServiceImplTest {
         when(emprendedorMapper.toDto(entidad)).thenReturn(responseEsperado);
 
         // Act
-        EmprendedorResponseDto resultado = emprendedorServiceImpl.save(request);
+        EmprendedorResponseDto resultado = emprendedorServiceImpl.saveEmpre(request);
 
         // Assert
         assertNotNull(resultado);

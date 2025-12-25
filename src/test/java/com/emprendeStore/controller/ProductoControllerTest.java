@@ -74,7 +74,7 @@ public class ProductoControllerTest {
         ProductoResponseDTO responseMock = new ProductoResponseDTO();
         responseMock.setId(1L);
         responseMock.setNombreProd(requestDto.getNombreProd());
-        when(productoService.save(any(ProductoRequestDTO.class))).thenReturn(responseMock);
+        when(productoService.saveProducto(any(ProductoRequestDTO.class))).thenReturn(responseMock);
 
         // Act
         ResponseEntity<ProductoResponseDTO> responseEntity = productoController.saveProducto(requestDto);
@@ -84,7 +84,7 @@ public class ProductoControllerTest {
         assertNotNull(responseEntity.getBody());
         assertEquals(responseMock.getId(), responseEntity.getBody().getId());
         assertEquals(responseMock.getNombreProd(), responseEntity.getBody().getNombreProd());
-        verify(productoService, times(1)).save(requestDto);
+        verify(productoService, times(1)).saveProducto(requestDto);
     }
 
     /* @Test

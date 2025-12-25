@@ -5,10 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 @Builder
 public class ProductoResponseDTO {
     private Long id;
@@ -20,6 +18,7 @@ public class ProductoResponseDTO {
     private String estadoProducto;
     private LocalDate fechaRegistro;
     private Long idCategoria;
+    private String nombreCategoria;
     private Long idEmprendedor;
 
 }

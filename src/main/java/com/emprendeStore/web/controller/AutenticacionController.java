@@ -99,7 +99,7 @@ public class AutenticacionController {
                 .fechaRegistro(usuario.getFechaRegistro())
                 .img(imagenBase64)
                 .token(token)
-                .rol(usuario.getRol()) // Agregamos el rol
+                .rol(usuario.getRol())
                 .build();
 
         return ResponseEntity.ok(response);

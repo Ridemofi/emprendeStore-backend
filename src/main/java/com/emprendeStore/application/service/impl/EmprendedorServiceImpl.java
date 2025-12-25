@@ -19,17 +19,19 @@ public class EmprendedorServiceImpl implements EmprendedorService {
     private final EmprendedorRepository er;
     private final EmprendedorMapper em;
     private final PasswordEncoder pe;
+
     @Override
     @Transactional
-    public EmprendedorResponseDto save(RegisterEmprendedorRequestDto dto) {
+    public EmprendedorResponseDto saveEmpre(RegisterEmprendedorRequestDto dto) {
         Emprendedor e=em.toEntity(dto);
         e.setPasswordempre(pe.encode(dto.getPassword()));
         er.save(e);
         return em.toDto(e);
     }
 
+    @Transactional
     @Override
-    public EmprendedorResponseDto delete(Long id) {
+    public EmprendedorResponseDto deleteEmpre(Long id) {
         Emprendedor e= er.findById(id).orElseThrow(() -> new RuntimeException("El Emprendedor con el id: " + id + " no existe"));
         er.delete(e);
         return em.toDto(e);

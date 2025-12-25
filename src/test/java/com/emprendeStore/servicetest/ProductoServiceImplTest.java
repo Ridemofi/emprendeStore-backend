@@ -82,7 +82,7 @@ public class ProductoServiceImplTest {
         when(productoMapper.toEntity(any(), any(), any())).thenReturn(productoParaGuardar);
         when(productoRepo.save(any(Producto.class))).thenReturn(productoGuardado);
         when(productoMapper.toDto(any(Producto.class))).thenReturn(responseDtoMock);
-        ProductoResponseDTO resultado = productoService.save(requestDto);
+        ProductoResponseDTO resultado = productoService.saveProducto(requestDto);
         assertNotNull(resultado);
         assertEquals(1L, resultado.getId());
         verify(categoriaRepo, times(1)).findById(requestDto.getIdCategoria());
@@ -119,7 +119,7 @@ public class ProductoServiceImplTest {
                 ProductoResponseDTO.builder().id(1L).nombreProd("Laptop").build()
         );
 
-        ProductoResponseDTO resultado = productoService.delete(1L);
+        ProductoResponseDTO resultado = productoService.deleteProducto(1L);
 
         verify(productoRepo, times(1)).delete(entidad);
         assertEquals("Laptop", resultado.getNombreProd());

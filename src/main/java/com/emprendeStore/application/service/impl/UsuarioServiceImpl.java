@@ -22,6 +22,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioMapper um;
     private final UsuarioRepository ur;
     private final PasswordEncoder pe;
+
     @Override
     @Transactional
     public UsuarioResponseDto save(RegisterUsuarioRequestDto dto) {
@@ -47,12 +48,12 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .toList();
     }
 
+    //actualiza gracias a @Transactional
     @Override
     @Transactional
     public UsuarioResponseDto update(UpdateUsuarioRequestDto dtoUpdate, Long id) {
         Usuario u = ur.findById(id).orElseThrow(() -> new ErrorNegocio("El Usuario con el id: " + id + " no existe"));
         um.updateEntity(dtoUpdate, u);
-        ur.save(u);
         return um.toDto(u);
     }
 

@@ -1,9 +1,9 @@
 package com.emprendeStore.domain.model;
 
+import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.domain.Estados.EstadoProducto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -33,7 +33,6 @@ public class Producto {
     private byte[] imgPro;
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)
-    @ColumnDefault("'ACTIVO'")
     private EstadoProducto estadoProducto;
     @CreationTimestamp
     @Column(name = "FECHA_REGISTRO", updatable = false)
@@ -44,10 +43,39 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "ID_EMPRE", nullable = false)
     private Emprendedor emprendedor;
-    @PrePersist
-    protected void onCreate() {
-        if (estadoProducto == null) {
-            estadoProducto = EstadoProducto.DISPONIBLE;
+
+    public void cambiarEstado(EstadoProducto nuevoEstado) {
+        switch (nuevoEstado) {
+            case Pausado -> this.estadoProducto = EstadoProducto.Pausado;
+            case Agotado -> {
+                this.stock = 0;
+                this.estadoProducto = EstadoProducto.Agotado;
+            }
+            case Disponible -> {
+                if (this.stock <= 0) {
+                    throw new ErrorNegocio("No se puede marcar como DISPONIBLE un producto sin stock");
+                }
+                this.estadoProducto = EstadoProducto.Disponible;
+            }
+            case Bajo -> {
+                if (this.stock <= 0) {
+                    throw new ErrorNegocio("No se puede marcar como BAJO un producto sin stock");
+                }
+                this.estadoProducto = EstadoProducto.Bajo;
+            }
+        }
+    }
+
+    public void recalcularEstado() {
+        if (this.estadoProducto == EstadoProducto.Pausado) {
+            return;
+        }
+        if (this.stock <= 0) {
+            this.estadoProducto = EstadoProducto.Agotado;
+        } else if (this.stock <= 10) {
+            this.estadoProducto = EstadoProducto.Bajo;
+        } else {
+            this.estadoProducto = EstadoProducto.Disponible;
         }
     }
 }

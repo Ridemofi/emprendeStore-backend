@@ -14,7 +14,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query(value = "SELECT * FROM PRODUCTOS WHERE ESTADO = 'DISPONIBLE' AND LOWER(NOMBPRO) LIKE LOWER(CONCAT('%', :nombre, '%'))", nativeQuery = true)
     List<Producto> buscarProducPorNombre(@Param("nombre") String nombre);
 
+    // Consulta para la búsqueda pública (filtra por estado)
     @Query("SELECT p FROM Producto p WHERE " +
+            "(p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible OR p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Bajo) AND " +
             "(:texto IS NULL OR p.nombreProd LIKE CONCAT('%', :texto, '%')) AND " +
             "(:idCategoria IS NULL OR p.categoria.idCategoria = :idCategoria) AND " +
             "(:idEmprendedor IS NULL OR p.emprendedor.idempre = :idEmprendedor)")
@@ -24,4 +26,12 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             @Param("idEmprendedor") Long idEmprendedor
     );
 
+    // NUEVA CONSULTA: Para la gestión del emprendedor (NO filtra por estado)
+    @Query("SELECT p FROM Producto p WHERE " +
+            "p.emprendedor.idempre = :idEmprendedor AND " +
+            "(:texto IS NULL OR p.nombreProd LIKE CONCAT('%', :texto, '%'))")
+    List<Producto> buscarProductParaGestion(
+            @Param("idEmprendedor") Long idEmprendedor,
+            @Param("texto") String texto
+    );
 }

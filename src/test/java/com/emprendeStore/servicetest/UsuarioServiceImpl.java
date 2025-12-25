@@ -1,10 +1,8 @@
 package com.emprendeStore.servicetest;
 
-import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.UsuarioMapper;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.domain.repository.UsuarioRepository;
-import com.emprendeStore.web.dto.request.LoginUsuarioRequestDto;
 import com.emprendeStore.web.dto.request.RegisterUsuarioRequestDto;
 import com.emprendeStore.web.dto.request.UpdateUsuarioRequestDto;
 import com.emprendeStore.web.dto.response.UsuarioResponseDto;
