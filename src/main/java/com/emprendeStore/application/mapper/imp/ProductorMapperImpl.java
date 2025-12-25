@@ -1,7 +1,6 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.ProductorMapper;
-import com.emprendeStore.domain.Estados.EstadoProducto;
 import com.emprendeStore.domain.model.Categoria;
 import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.model.Producto;
