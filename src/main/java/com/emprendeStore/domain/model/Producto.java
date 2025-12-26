@@ -46,23 +46,12 @@ public class Producto {
 
     public void cambiarEstado(EstadoProducto nuevoEstado) {
         switch (nuevoEstado) {
-            case Pausado -> this.estadoProducto = EstadoProducto.Pausado;
-            case Agotado -> {
-                this.stock = 0;
-                this.estadoProducto = EstadoProducto.Agotado;
-            }
-            case Disponible -> {
-                if (this.stock <= 0) {
-                    throw new ErrorNegocio("No se puede marcar como DISPONIBLE un producto sin stock");
-                }
+            case Pausado:
+                this.estadoProducto = EstadoProducto.Pausado;
+                break;
+            default:
                 this.estadoProducto = EstadoProducto.Disponible;
-            }
-            case Bajo -> {
-                if (this.stock <= 0) {
-                    throw new ErrorNegocio("No se puede marcar como BAJO un producto sin stock");
-                }
-                this.estadoProducto = EstadoProducto.Bajo;
-            }
+                break;
         }
     }
 

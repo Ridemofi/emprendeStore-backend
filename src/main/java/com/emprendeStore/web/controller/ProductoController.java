@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -45,6 +46,12 @@ public class ProductoController {
     ) {
         String txtFiltro = (q != null && !q.trim().isEmpty()) ? q : null;
         return ResponseEntity.ok(ps.buscarProductosParaGestion(emprendedor, txtFiltro));
+    }
+
+    @Operation(summary = "Obtener estadísticas de productos", description = "Devuelve el total de productos, el conteo de bajo stock y el valor total del inventario.")
+    @GetMapping("/estadisticas")
+    public ResponseEntity<Map<String, Object>> obtenerEstadisticas(@RequestParam Long emprendedor) {
+        return ResponseEntity.ok(ps.obtenerEstadisticas(emprendedor));
     }
 
     @Operation(summary = "Registrar Producto", description = "Registrar un producto nuevo")

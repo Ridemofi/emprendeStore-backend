@@ -1,10 +1,12 @@
 package com.emprendeStore.domain.repository;
 
+import com.emprendeStore.domain.Estados.EstadoProducto;
 import com.emprendeStore.domain.model.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
@@ -34,4 +36,16 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             @Param("idEmprendedor") Long idEmprendedor,
             @Param("texto") String texto
     );
+
+    /**
+     * Cuenta el número de productos con un estado específico para un emprendedor.
+     * Spring Data JPA genera la consulta automáticamente.
+     * Ejemplo de uso: countByEmprendedorIdempreAndEstadoProducto(1L, EstadoProducto.BAJO);
+     */
+    long countByEmprendedorIdempreAndEstadoProducto(Long idEmprendedor, EstadoProducto estado);
+
+    @Query("SELECT COALESCE(SUM(p.precio * p.stock), 0) FROM Producto p WHERE p.emprendedor.idempre = :idEmprendedor")
+    BigDecimal calcularValorTotalInventarioByEmprendedor(@Param("idEmprendedor") Long idEmprendedor);
+
+    long countByEmprendedorIdempre(Long idEmprendedor);
 }

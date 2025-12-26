@@ -18,8 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -70,10 +73,9 @@ public class ProductoServiceImpl implements ProductoService {
         if (StringUtils.hasText(dto.getEstado())) {
             p.cambiarEstado(EstadoProducto.obtenerDesde(dto.getEstado()));
         }
-        // Solo recalcular si no se fuerza un estado Y el stock ha cambiado.
-        else if (dto.getStock() != null) {
-            p.recalcularEstado();
-        }
+        // recalcularEstado decide Disponible/Bajo/Agotado según stock,
+        // excepto cuando el producto está Pausado.
+        p.recalcularEstado();
         return pm.toDto(p);
     }
 
@@ -99,5 +101,19 @@ public class ProductoServiceImpl implements ProductoService {
                 .stream()
                 .map(pm::toDto)
                 .toList();
+    }
+
+    @Override
+    public Map<String, Object> obtenerEstadisticas(Long idEmprendedor) {
+        long totalProductos = pr.countByEmprendedorIdempre(idEmprendedor);
+        long productosBajoStock = pr.countByEmprendedorIdempreAndEstadoProducto(idEmprendedor, EstadoProducto.Bajo);
+        BigDecimal valorInventario = pr.calcularValorTotalInventarioByEmprendedor(idEmprendedor);
+
+        Map<String, Object> estadisticas = new HashMap<>();
+        estadisticas.put("totalProductos", totalProductos);
+        estadisticas.put("productosBajoStock", productosBajoStock);
+        estadisticas.put("valorTotalInventario", valorInventario);
+
+        return estadisticas;
     }
 }
