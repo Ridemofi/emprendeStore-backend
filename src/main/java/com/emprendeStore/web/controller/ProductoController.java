@@ -4,6 +4,8 @@ import com.emprendeStore.application.service.ProductoService;
 import com.emprendeStore.web.dto.request.ProductoRequestDTO;
 import com.emprendeStore.web.dto.request.UpdateProductoRequestDto;
 import com.emprendeStore.web.dto.response.ProductoResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,13 @@ import java.util.List;
 public class ProductoController {
     private final ProductoService ps;
 
+    @Operation(summary = "Listar Productos Nuevos", description = "Listar productos nuevos")
     @GetMapping("/recientes")
     public ResponseEntity<List<ProductoResponseDTO>> listarRecientes() {
         return ResponseEntity.ok(ps.listarnuevosproductos());
     }
 
+    @Operation(summary = "Buscar Productos para Cliente", description = "Buscar productos por filtro")
     @GetMapping
     public ResponseEntity<List<ProductoResponseDTO>> buscarPorFiltroCliente(
             @RequestParam(required = false) String q,
@@ -33,6 +37,7 @@ public class ProductoController {
         return ResponseEntity.ok(ps.buscarProductos(txtFiltro, categoria, emprendedor));
     }
 
+    @Operation(summary = "Buscar Productos para Gestion", description = "Buscar productos por filtro")
     @GetMapping("/gestion")
     public ResponseEntity<List<ProductoResponseDTO>> buscarPorFiltroGestion(
             @RequestParam Long emprendedor,
@@ -42,19 +47,22 @@ public class ProductoController {
         return ResponseEntity.ok(ps.buscarProductosParaGestion(emprendedor, txtFiltro));
     }
 
+    @Operation(summary = "Registrar Producto", description = "Registrar un producto nuevo")
     @PostMapping
-    public ResponseEntity<ProductoResponseDTO> saveProducto(@RequestBody ProductoRequestDTO dto) {
+    public ResponseEntity<ProductoResponseDTO> saveProducto(@Valid @RequestBody ProductoRequestDTO dto) {
         return new ResponseEntity<>(ps.saveProducto(dto), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Actualizar Producto", description = "Actualizar un producto existente")
     @PutMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> updateProducto(
-            @RequestBody UpdateProductoRequestDto dto,
+            @Valid @RequestBody UpdateProductoRequestDto dto,
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(ps.updateProducto(dto, id));
     }
 
+    @Operation(summary = "Eliminar Producto", description = "Eliminar un producto por su ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> deleteProducto(
             @PathVariable Long id

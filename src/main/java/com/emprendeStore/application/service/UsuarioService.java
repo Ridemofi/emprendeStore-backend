@@ -7,8 +7,8 @@ import com.emprendeStore.web.dto.response.UsuarioResponseDto;
 import java.util.List;
 
 public interface UsuarioService {
-    UsuarioResponseDto save(RegisterUsuarioRequestDto dto);
-    UsuarioResponseDto delete(Long id);
+    UsuarioResponseDto saveUsu(RegisterUsuarioRequestDto dto);
+    UsuarioResponseDto deleteUsu(Long id);
     List<UsuarioResponseDto> listarUsuarios();
-    UsuarioResponseDto update(UpdateUsuarioRequestDto dtoUpdate, Long id);
+    UsuarioResponseDto updateUsu(UpdateUsuarioRequestDto dtoUpdate, Long id);
 }

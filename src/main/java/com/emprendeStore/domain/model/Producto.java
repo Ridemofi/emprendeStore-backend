@@ -38,7 +38,7 @@ public class Producto {
     @Column(name = "FECHA_REGISTRO", updatable = false)
     private LocalDate fechaRegistro;
     @ManyToOne
-    @JoinColumn(name = "ID_CAT")
+    @JoinColumn(name = "ID_CAT", nullable = false)
     private Categoria categoria;
     @ManyToOne
     @JoinColumn(name = "ID_EMPRE", nullable = false)

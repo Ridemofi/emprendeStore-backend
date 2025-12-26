@@ -2,6 +2,7 @@ package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.UsuarioMapper;
+import com.emprendeStore.application.service.EmailService;
 import com.emprendeStore.application.service.UsuarioService;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.domain.repository.UsuarioRepository;
@@ -21,19 +22,21 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioMapper um;
     private final UsuarioRepository ur;
     private final PasswordEncoder pe;
+    private final EmailService es;
 
     @Override
     @Transactional
-    public UsuarioResponseDto save(RegisterUsuarioRequestDto dto) {
+    public UsuarioResponseDto saveUsu(RegisterUsuarioRequestDto dto) {
         Usuario u=um.toEntity(dto);
         u.setPassword(pe.encode(dto.getPassword()));
         ur.save(u);
+        es.enviarCorreoBienvenida(u.getCorreo(), u.getNombReal());
         return um.toDto(u);
     }
 
     @Override
     @Transactional
-    public UsuarioResponseDto delete(Long id) {
+    public UsuarioResponseDto deleteUsu(Long id) {
         Usuario u = ur.findById(id).orElseThrow(() -> new ErrorNegocio("El Usuario con el id: " + id + " no existe"));
         ur.delete(u);
         return um.toDto(u);
@@ -50,7 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     //actualiza gracias a @Transactional
     @Override
     @Transactional
-    public UsuarioResponseDto update(UpdateUsuarioRequestDto dtoUpdate, Long id) {
+    public UsuarioResponseDto updateUsu(UpdateUsuarioRequestDto dtoUpdate, Long id) {
         Usuario u = ur.findById(id).orElseThrow(() -> new ErrorNegocio("El Usuario con el id: " + id + " no existe"));
         um.updateEntity(dtoUpdate, u);
         return um.toDto(u);

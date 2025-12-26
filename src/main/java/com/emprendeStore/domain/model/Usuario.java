@@ -18,19 +18,16 @@ public class Usuario {
     private Long idUsu;
 
     @Lob
-    @Column(name = "IMAGENUSU", columnDefinition = "LONGBLOB")
+    @Column(name = "IMAGENUSU", columnDefinition = "LONGBLOB", nullable = true)
     private byte[] imgUsu;
 
     @Column(name = "NOMBREREAL", nullable = false, length = 30)
     private String nombReal;
 
-    @Column(name = "USUARIO", nullable = false, length = 30)
-    private String nomUsu;
-
     @Column(name = "CORREO", nullable = false, length = 40)
     private String correo;
 
-    @Column(name = "NRO_CEL", nullable = false, length = 11)
+    @Column(name = "NRO_CEL", length = 11, nullable = true)
     private String nroCel;
 
     @Column(name = "PASSWORD", nullable = false, length = 100)

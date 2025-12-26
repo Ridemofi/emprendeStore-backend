@@ -59,7 +59,8 @@ public class CarritoServiceImplTest {
 
     @Test
     void obtenerCarrito_deberiaRetornarDto() {
-        Usuario usuario = Usuario.builder().idUsu(1L).nomUsu("jesus").build();
+        // Corrección: Eliminado nomUsu
+        Usuario usuario = Usuario.builder().idUsu(1L).correo("jesus@test.com").build();
         Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new ArrayList<>()).build();
         CarritoResponseDto responseEsperado = CarritoResponseDto.builder().idCarrito(1L).build();
 

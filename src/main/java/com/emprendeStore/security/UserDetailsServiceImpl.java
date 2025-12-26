@@ -25,26 +25,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String identificador) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         // 1. Intentar buscar como Emprendedor (por correo)
-        Optional<Emprendedor> emprendedorOpt = emprendedorRepository.findByCorreoemp(identificador);
+        Optional<Emprendedor> emprendedorOpt = emprendedorRepository.findByCorreoemp(correo);
         if (emprendedorOpt.isPresent()) {
             Emprendedor emp = emprendedorOpt.get();
             return new User(emp.getCorreoemp(), emp.getPasswordempre(), Collections.emptyList());
         }
 
-        // 2. Intentar buscar como Usuario (por correo o nombre de usuario)
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreoOrNomUsu(identificador, identificador);
+        // 2. Intentar buscar como Usuario (solo por correo)
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
         if (usuarioOpt.isPresent()) {
             Usuario usu = usuarioOpt.get();
-            // Usamos el identificador con el que se encontró (puede ser correo o nomUsu) como username
-            // O preferiblemente siempre el correo o nomUsu para consistencia.
-            // Aquí usaremos el correo como username principal para el UserDetails si está disponible, o el nomUsu.
-            String username = usu.getCorreo(); 
-            return new User(username, usu.getPassword(), Collections.emptyList());
+            return new User(usu.getCorreo(), usu.getPassword(), Collections.emptyList());
         }
 
         // 3. Si no se encuentra en ninguno
-        throw new UsernameNotFoundException("Usuario o Emprendedor no encontrado con el identificador: " + identificador);
+        throw new UsernameNotFoundException("Usuario o Emprendedor no encontrado con el correo: " + correo);
     }
 }

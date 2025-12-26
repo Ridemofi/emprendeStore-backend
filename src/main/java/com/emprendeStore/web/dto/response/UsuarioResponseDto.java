@@ -11,7 +11,6 @@ public class UsuarioResponseDto {
     private Long id;
     private String img;
     private String nombreReal;
-    private String nomUsu;
     private String correo;
     private String nroCel;
     private LocalDate fechaRegistro;

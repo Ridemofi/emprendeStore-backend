@@ -18,11 +18,8 @@ public class UsuarioMapperImpl implements UsuarioMapper {
     @Override
     public Usuario toEntity(RegisterUsuarioRequestDto dto) {
         return Usuario.builder()
-                .imgUsu(dto.getImg())
                 .nombReal(dto.getNombreReal())
-                .nomUsu(dto.getNomUsu())
                 .correo(dto.getCorreo())
-                .nroCel(dto.getNroCel())
                 .password(dto.getPassword())
                 .build();
     }
@@ -43,9 +40,6 @@ public class UsuarioMapperImpl implements UsuarioMapper {
         if (dtoUpdate.getNroCel() != null) {
             u.setNroCel(dtoUpdate.getNroCel());
         }
-        if (dtoUpdate.getNomUsu() != null) {
-            u.setNomUsu(dtoUpdate.getNomUsu());
-        }
         if (dtoUpdate.getCorreo() != null) {
             u.setCorreo(dtoUpdate.getCorreo());
         }
@@ -61,7 +55,6 @@ public class UsuarioMapperImpl implements UsuarioMapper {
                 .id(u.getIdUsu())
                 .img(img)
                 .nombreReal(u.getNombReal())
-                .nomUsu(u.getNomUsu())
                 .correo(u.getCorreo())
                 .nroCel(u.getNroCel())
                 .fechaRegistro(u.getFechaRegistro())

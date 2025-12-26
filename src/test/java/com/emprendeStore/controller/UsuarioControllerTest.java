@@ -2,9 +2,10 @@ package com.emprendeStore.controller;
 
 import com.emprendeStore.application.service.UsuarioService;
 import com.emprendeStore.web.controller.UsuarioController;
-import com.emprendeStore.web.dto.request.LoginUsuarioRequestDto;
 import com.emprendeStore.web.dto.request.RegisterUsuarioRequestDto;
+import com.emprendeStore.web.dto.request.UpdateUsuarioRequestDto;
 import com.emprendeStore.web.dto.response.UsuarioResponseDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,91 +14,85 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UsuarioControllerTest {
 
-    @InjectMocks
-    private UsuarioController usuarioController;
-
     @Mock
     private UsuarioService usuarioService;
 
-    // CORRECCIÓN: El @BeforeEach y el mock de UsuarioRepository se eliminaron.
+    @InjectMocks
+    private UsuarioController usuarioController;
 
-    @Test
-    void listarUsuarios() {
-        // Arrange (Preparar)
-        List<UsuarioResponseDto> usuariosMock = generarListaUsuariosDto();
-        when(usuarioService.listarUsuarios()).thenReturn(usuariosMock);
+    private UsuarioResponseDto usuarioResponseDto;
 
-        // Act (Actuar)
-        ResponseEntity<List<UsuarioResponseDto>> response = usuarioController.listar();
-
-        // Assert (Verificar)
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(2, response.getBody().size());
-        assertEquals("maria_dev", response.getBody().get(0).getNomUsu());
-    }
-
-    @Test
-    void registrarUsuario() {
-        // Arrange
-        RegisterUsuarioRequestDto request = generarUsuarioRequestDto();
-        UsuarioResponseDto responseMock = generarUsuarioResponseDto();
-        when(usuarioService.save(any(RegisterUsuarioRequestDto.class))).thenReturn(responseMock);
-
-        // Act
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.saveUsu(request);
-
-        // Assert
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(10L, response.getBody().getId());
-        assertEquals("maria_dev", response.getBody().getNomUsu());
-    }
-
-
-    @Test
-    void eliminarUsuario() {
-        Long id = 10L;
-        // No necesitamos mockear 'delete' porque devuelve void, solo verificamos que se llame.
-        doNothing().when(usuarioService).delete(id);
-        ResponseEntity<String> response = usuarioController.delete(id);
-        verify(usuarioService, times(1)).delete(id);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Usuario con ID " + id + " eliminado correctamente", response.getBody());
-    }
-
-    private UsuarioResponseDto generarUsuarioResponseDto() {
-        return UsuarioResponseDto.builder()
-                .id(10L)
-                .nombreReal("María")
-                .nomUsu("maria_dev")
-                .correo("maria@correo.com")
-                .nroCel("987654321")
-                .fechaRegistro(LocalDate.now())
+    @BeforeEach
+    void setUp() {
+        usuarioResponseDto = UsuarioResponseDto.builder()
+                .id(1L)
+                .correo("test@test.com")
+                .nombreReal("Test User")
                 .build();
     }
 
-    private List<UsuarioResponseDto> generarListaUsuariosDto() {
-        UsuarioResponseDto usuario2 = UsuarioResponseDto.builder()
-                .id(20L).nombreReal("Carlos").nomUsu("carlos_web").correo("carlos@correo.com")
-                .nroCel("912345678").fechaRegistro(LocalDate.now()).build();
-        return List.of(generarUsuarioResponseDto(), usuario2);
+    @Test
+    void listar_Usus_deberiaRetornarLista() {
+        when(usuarioService.listarUsuarios()).thenReturn(List.of(usuarioResponseDto));
+
+        ResponseEntity<List<UsuarioResponseDto>> response = usuarioController.listarUsus();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        assertEquals("test@test.com", response.getBody().get(0).getCorreo());
     }
 
-    private RegisterUsuarioRequestDto generarUsuarioRequestDto() {
-        return RegisterUsuarioRequestDto.builder()
-                .nombreReal("María").nomUsu("maria_dev").correo("maria@correo.com")
-                .nroCel("987654321").password("clave456").img(null).build();
+    @Test
+    void saveUsu_deberiaRetornarCreated() {
+        RegisterUsuarioRequestDto request = RegisterUsuarioRequestDto.builder()
+                .correo("test@test.com")
+                .password("123456")
+                .build();
+
+        when(usuarioService.saveUsu(any(RegisterUsuarioRequestDto.class))).thenReturn(usuarioResponseDto);
+
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.saveUsu(request);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("test@test.com", response.getBody().getCorreo());
+    }
+
+    @Test
+    void updateUsu_deberiaRetornarOk() {
+        UpdateUsuarioRequestDto request = UpdateUsuarioRequestDto.builder()
+                .correo("updated@test.com")
+                .build();
+        
+        UsuarioResponseDto updatedResponse = UsuarioResponseDto.builder()
+                .id(1L)
+                .correo("updated@test.com")
+                .build();
+
+        when(usuarioService.updateUsu(any(UpdateUsuarioRequestDto.class), eq(1L))).thenReturn(updatedResponse);
+
+        ResponseEntity<String> response = usuarioController.updateUsu(request, 1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Usuario: 1 actualizado correctamente", response.getBody());
+    }
+
+    @Test
+    void delete_Usu_deberiaRetornarOk() {
+        when(usuarioService.deleteUsu(1L)).thenReturn(usuarioResponseDto);
+
+        ResponseEntity<String> response = usuarioController.deleteUsu(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Usuario con ID 1 eliminado correctamente", response.getBody());
     }
 }
