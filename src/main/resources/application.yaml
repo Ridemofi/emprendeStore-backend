@@ -17,6 +17,7 @@ spring:
     port: 587                  # Puerto estándar para TLS
     username: resend           # Siempre es "resend"
     password: ${RESEND_API_KEY} # Tu nueva API Key va aquí (en variable de entorno)
+    from: onboarding@ridemofi.me # Correo de tu dominio verificado
     properties:
       mail:
         smtp:
@@ -26,3 +27,7 @@ spring:
 jwt:
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
   expiration: 86400000
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}

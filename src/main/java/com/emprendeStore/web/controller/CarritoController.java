@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("api/carrito")
 @CrossOrigin("*")
@@ -16,7 +18,7 @@ public class CarritoController {
 
     @GetMapping("/{idUsuario}")
     public ResponseEntity<CarritoResponseDto> obtenerCarrito(@PathVariable Long idUsuario) {
-        return ResponseEntity.ok(cs.obtenerCarrito(idUsuario));
+        return ResponseEntity.ok(cs.getCarrito(idUsuario));
     }
 
     @PostMapping("/{idUsuario}/item")
@@ -29,7 +31,7 @@ public class CarritoController {
     public ResponseEntity<CarritoResponseDto> actualizarCantidadItem(@PathVariable Long idUsuario,
                                                                      @PathVariable Long idDetalleCarrito,
                                                                      @RequestParam int nuevaCantidad) {
-        return ResponseEntity.ok(cs.actualizarCantidadItem(idUsuario, idDetalleCarrito, nuevaCantidad));
+        return ResponseEntity.ok(cs.updateCantidadItem(idUsuario, idDetalleCarrito, nuevaCantidad));
     }
 
     @DeleteMapping("/{idUsuario}/item/{idDetalleCarrito}")
@@ -37,6 +39,17 @@ public class CarritoController {
                                                           @PathVariable Long idDetalleCarrito) {
         return ResponseEntity.ok(cs.removerItem(idUsuario, idDetalleCarrito));
     }
+    @GetMapping("/{idUsuario}/subtotal")
+    public ResponseEntity<BigDecimal> obtenerSubtotalCarrito(@PathVariable Long idUsuario) {
+        BigDecimal st = cs.getSubtotalCarritoXUsuario(idUsuario);
+        return ResponseEntity.ok(st);
+    }
 
-
+    @PatchMapping("/{idUsuario}/item/{idDetalleCarrito}/seleccion")
+    public ResponseEntity<Void> actualizarSeleccionItem(@PathVariable Long idUsuario,
+                                                        @PathVariable Long idDetalleCarrito,
+                                                        @RequestParam boolean seleccionado) {
+        cs.updateSeleccionItem(idUsuario, idDetalleCarrito, seleccionado);
+        return ResponseEntity.noContent().build();
+    }
 }

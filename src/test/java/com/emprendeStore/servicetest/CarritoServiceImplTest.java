@@ -58,7 +58,7 @@ public class CarritoServiceImplTest {
     }
 
     @Test
-    void obtenerCarrito_deberiaRetornarDto() {
+    void getCarrito_deberiaRetornarDto() {
         // Corrección: Eliminado nomUsu
         Usuario usuario = Usuario.builder().idUsu(1L).correo("jesus@test.com").build();
         Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new ArrayList<>()).build();
@@ -67,7 +67,7 @@ public class CarritoServiceImplTest {
         when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
         when(carritoMapper.toDto(carrito)).thenReturn(responseEsperado);
 
-        CarritoResponseDto resultado = carritoServiceImpl.obtenerCarrito(1L);
+        CarritoResponseDto resultado = carritoServiceImpl.getCarrito(1L);
 
         assertEquals(1L, resultado.getIdCarrito());
     }
@@ -91,7 +91,7 @@ public class CarritoServiceImplTest {
     }
 
     @Test
-    void actualizarCantidadItem_deberiaActualizarCantidad() {
+    void actualizarCantidadItem_deberiaUpdateCantidad() {
         Usuario usuario = Usuario.builder().idUsu(1L).build();
         Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).build();
         DetalleCarrito detalle = DetalleCarrito.builder()
@@ -107,7 +107,7 @@ public class CarritoServiceImplTest {
         when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
         when(carritoMapper.toDto(carrito)).thenReturn(CarritoResponseDto.builder().idCarrito(1L).build());
 
-        CarritoResponseDto resultado = carritoServiceImpl.actualizarCantidadItem(1L, 5L, 3);
+        CarritoResponseDto resultado = carritoServiceImpl.updateCantidadItem(1L, 5L, 3);
 
         assertEquals(3, detalle.getCantidad());
     }

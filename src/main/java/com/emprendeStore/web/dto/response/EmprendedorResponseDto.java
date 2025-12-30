@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class EmprendedorResponseDto {
 
     private Long idemp;
-    private byte[] imgemp;
+    private String imgemp;
     private String nombep;
     private String correo;
     private String nrocell;

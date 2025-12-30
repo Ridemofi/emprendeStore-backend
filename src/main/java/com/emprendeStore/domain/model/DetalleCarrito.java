@@ -27,4 +27,8 @@ public class DetalleCarrito {
     private Integer cantidad;
     @Column(name = "PRECIO_UNIDAD", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioUnitario;
+
+    @Column(name = "SELECCIONADO", nullable = false)
+    @Builder.Default
+    private Boolean seleccionado = true;
 }

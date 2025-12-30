@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class RegisterEmprendedorRequestDto {
-    private byte[] imgemp;
+    private String imgemp;
     private String nombep;
     private String correo;
     private String nrocell;

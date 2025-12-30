@@ -2,10 +2,14 @@ package com.emprendeStore.application.service;
 
 import com.emprendeStore.web.dto.response.CarritoResponseDto;
 
+import java.math.BigDecimal;
+
 public interface CarritoService {
 
-    CarritoResponseDto obtenerCarrito(Long idUsuario);
+    CarritoResponseDto getCarrito(Long idUsuario);
     CarritoResponseDto agregarProducto(Long idUsuario, Long idProducto);
-    CarritoResponseDto actualizarCantidadItem(Long idUsuario, Long idDetalleCarrito, int nuevaCantidad);
+    CarritoResponseDto updateCantidadItem(Long idUsuario, Long idDetalleCarrito, int nuevaCantidad);
     CarritoResponseDto removerItem(Long idUsuario, Long idDetalleCarrito);
+    BigDecimal getSubtotalCarritoXUsuario(Long idUsuario);
+    void updateSeleccionItem(Long idUsuario, Long idDetalleCarrito, boolean seleccionado);
 }

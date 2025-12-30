@@ -1,6 +1,5 @@
 package com.emprendeStore.application.mapper.imp;
 
-import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.UsuarioMapper;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.request.RegisterUsuarioRequestDto;
@@ -8,8 +7,6 @@ import com.emprendeStore.web.dto.request.UpdateUsuarioRequestDto;
 import com.emprendeStore.web.dto.response.UsuarioResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Base64;
 
 @Component
 @RequiredArgsConstructor
@@ -26,14 +23,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
 
     @Override
     public void updateEntity(UpdateUsuarioRequestDto dtoUpdate, Usuario u) {
-        if (dtoUpdate.getImgusu() != null && !dtoUpdate.getImgusu().isEmpty()) {
-            try {
-                byte[] imgb = Base64.getDecoder().decode(dtoUpdate.getImgusu());
-                u.setImgUsu(imgb);
-            } catch (IllegalArgumentException e) {
-                throw new ErrorNegocio("Error al decodificar la imagen Base64.");
-            }
-        }
+        // La imagen del usuario se actualiza únicamente mediante el endpoint específico con Cloudinary
         if (dtoUpdate.getNombreReal() != null) {
             u.setNombReal(dtoUpdate.getNombreReal());
         }
@@ -47,10 +37,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
 
     @Override
     public UsuarioResponseDto toDto(Usuario u) {
-        String img = null;
-        if (u.getImgUsu() != null && u.getImgUsu().length > 0) {
-            img = Base64.getEncoder().encodeToString(u.getImgUsu());
-        }
+        String img = u.getImagenUsu();
         return UsuarioResponseDto.builder()
                 .id(u.getIdUsu())
                 .img(img)

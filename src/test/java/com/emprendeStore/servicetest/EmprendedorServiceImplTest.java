@@ -2,6 +2,7 @@ package com.emprendeStore.servicetest;
 
 
 import com.emprendeStore.application.mapper.EmprendedorMapper;
+import com.emprendeStore.application.service.impl.CloudinaryServiceImpl;
 import com.emprendeStore.application.service.impl.EmprendedorServiceImpl;
 import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.repository.EmprendedorRepository;
@@ -37,9 +38,13 @@ public class EmprendedorServiceImplTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
+    @Mock
+    CloudinaryServiceImpl cs;
+
+
     @BeforeEach
     void setUp() {
-        emprendedorServiceImpl = new EmprendedorServiceImpl(emprendedorRepo, emprendedorMapper, passwordEncoder);
+        emprendedorServiceImpl = new EmprendedorServiceImpl(emprendedorRepo, emprendedorMapper, passwordEncoder, cs);
     }
 
     @AfterEach

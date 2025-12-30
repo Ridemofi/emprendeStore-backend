@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Override
     @Transactional
-    public CarritoResponseDto obtenerCarrito(Long idUsuario) {
+    public CarritoResponseDto getCarrito(Long idUsuario) {
         Carrito carrito = obtenerOCrearCarrito(idUsuario);
         return cm.toDto(carrito);
     }
@@ -76,7 +77,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Override
     @Transactional
-    public CarritoResponseDto actualizarCantidadItem(Long idUsuario, Long idDetalleCarrito, int nuevaCantidad) {
+    public CarritoResponseDto updateCantidadItem(Long idUsuario, Long idDetalleCarrito, int nuevaCantidad) {
         if (nuevaCantidad <= 0) {
             return removerItem(idUsuario, idDetalleCarrito);
         }
@@ -91,7 +92,7 @@ public class CarritoServiceImpl implements CarritoService {
         detalle.setCantidad(nuevaCantidad);
         dcr.save(detalle);
 
-        return obtenerCarrito(idUsuario);
+        return getCarrito(idUsuario);
     }
 
     @Override
@@ -105,6 +106,22 @@ public class CarritoServiceImpl implements CarritoService {
         }
         detalle.getCarrito().getDetalles().remove(detalle);
         dcr.delete(detalle);
-        return obtenerCarrito(idUsuario);
+        return getCarrito(idUsuario);
+    }
+
+    @Override
+    public BigDecimal getSubtotalCarritoXUsuario(Long idUsuario) {
+        return dcr.obtenerSubtotalSeleccionadosPorUsuario(idUsuario);
+    }
+
+    @Override
+    @Transactional
+    public void updateSeleccionItem(Long idUsuario, Long idDetalleCarrito, boolean seleccionado) {
+        DetalleCarrito d = dcr.findById(idDetalleCarrito).orElseThrow(() -> new ErrorNegocio("Ítem del carrito no encontrado"));
+        if (!d.getCarrito().getUsuario().getIdUsu().equals(idUsuario)) {
+            throw new ErrorNegocio("Acceso denegado. No puedes modificar ítems de otro usuario.");
+        }
+        d.setSeleccionado(seleccionado);
+        dcr.save(d);
     }
 }

@@ -17,9 +17,8 @@ public class Usuario {
     @Column(name = "ID_USU")
     private Long idUsu;
 
-    @Lob
-    @Column(name = "IMAGENUSU", columnDefinition = "LONGBLOB", nullable = true)
-    private byte[] imgUsu;
+    @Column(name = "IMAGENUSU", length = 255, nullable = true)
+    private String imagenUsu;
 
     @Column(name = "NOMBREREAL", nullable = false, length = 30)
     private String nombReal;

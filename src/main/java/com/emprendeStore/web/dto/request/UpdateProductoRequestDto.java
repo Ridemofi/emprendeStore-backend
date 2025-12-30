@@ -19,7 +19,6 @@ public class UpdateProductoRequestDto {
     private BigDecimal precio;
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
-    private String imgpro;
     private Long idCategoria;
     private String estado;
 }

@@ -1,6 +1,5 @@
 package com.emprendeStore.domain.model;
 
-import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.domain.Estados.EstadoProducto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,9 +27,8 @@ public class Producto {
     private BigDecimal precio;
     @Column(name = "STOCKA", nullable = false)
     private int stock;
-    @Lob
-    @Column(name = "IMGPRO", columnDefinition = "LONGBLOB")
-    private byte[] imgPro;
+    @Column(name = "IMGPRO", length = 255, nullable = true)
+    private String imgPro;
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false)
     private EstadoProducto estadoProducto;

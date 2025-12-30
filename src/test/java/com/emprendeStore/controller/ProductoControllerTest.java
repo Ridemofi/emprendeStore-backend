@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,19 +55,6 @@ public class ProductoControllerTest {
         verify(productoService, times(1)).listarnuevosproductos();
     }
 
-    /*@Test
-    void obtenerProducto() {
-        ProductoResponseDTO producto = generarProductoDto();
-        when(productoService.obtenerProducto(anyLong())).thenReturn(producto);
-
-        ResponseEntity<?> responseEntity = productoController.obtenerProducto(1L);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        ProductoResponseDTO productoResponse = (ProductoResponseDTO) responseEntity.getBody();
-        assertEquals(1L, productoResponse.getId());
-    }
-    */
-
     @Test
     void registrarProducto() {
         // Arrange
@@ -74,41 +62,22 @@ public class ProductoControllerTest {
         ProductoResponseDTO responseMock = new ProductoResponseDTO();
         responseMock.setId(1L);
         responseMock.setNombreProd(requestDto.getNombreProd());
-        when(productoService.saveProducto(any(ProductoRequestDTO.class))).thenReturn(responseMock);
+        
+        // Mock de MultipartFile (puede ser null para este test si el servicio lo permite, o un mock)
+        MultipartFile fileMock = null; 
+
+        when(productoService.saveProducto(eq(requestDto), eq(fileMock))).thenReturn(responseMock);
 
         // Act
-        ResponseEntity<ProductoResponseDTO> responseEntity = productoController.saveProducto(requestDto);
+        ResponseEntity<ProductoResponseDTO> responseEntity = productoController.saveProducto(requestDto, fileMock);
 
         // Assert
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(responseMock.getId(), responseEntity.getBody().getId());
         assertEquals(responseMock.getNombreProd(), responseEntity.getBody().getNombreProd());
-        verify(productoService, times(1)).saveProducto(requestDto);
+        verify(productoService, times(1)).saveProducto(requestDto, fileMock);
     }
-
-    /* @Test
-    void modificarProducto() {
-        ProductoResponseDTO producto = generarProductoDto();
-
-        when(productoService.modificarProducto(any(Producto.class))).thenReturn(producto);
-
-        ResponseEntity<?> responseEntity = productoController.modificarProducto(producto);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        Producto productoResponse = (Producto) responseEntity.getBody();
-        assertEquals(1L, productoResponse.getIdProducto());
-    }
-    */
-
-    /*
-    @Test
-    void eliminarEmpleado() {
-        when(empleadoServiceImpl.eliminarEmpleado(anyInt())).thenReturn("Empleado eliminado");
-        empleadoController.eliminarEmpleado(1);
-        verify(empleadoServiceImpl,times(1)).eliminarEmpleado(anyInt());
-    }
-    */
 
     private List<ProductoResponseDTO> generarListaProductosDto() {
         ProductoResponseDTO producto1 = new ProductoResponseDTO();

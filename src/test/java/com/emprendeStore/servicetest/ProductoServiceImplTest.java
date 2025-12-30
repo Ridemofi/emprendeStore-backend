@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -77,12 +78,18 @@ public class ProductoServiceImplTest {
         productoGuardado.setIdProducto(1L);
         ProductoResponseDTO responseDtoMock = new ProductoResponseDTO();
         responseDtoMock.setId(1L);
+        
+        // Mock de MultipartFile
+        MultipartFile imagenMock = mock(MultipartFile.class);
+        
         when(categoriaRepo.findById(anyLong())).thenReturn(Optional.of(categoriaMock));
         when(emprendedorRepo.findById(anyLong())).thenReturn(Optional.of(emprendedorMock));
         when(productoMapper.toEntity(any(), any(), any())).thenReturn(productoParaGuardar);
         when(productoRepo.save(any(Producto.class))).thenReturn(productoGuardado);
         when(productoMapper.toDto(any(Producto.class))).thenReturn(responseDtoMock);
-        ProductoResponseDTO resultado = productoService.saveProducto(requestDto);
+
+        ProductoResponseDTO resultado = productoService.saveProducto(requestDto, imagenMock);
+
         assertNotNull(resultado);
         assertEquals(1L, resultado.getId());
         verify(categoriaRepo, times(1)).findById(requestDto.getIdCategoria());

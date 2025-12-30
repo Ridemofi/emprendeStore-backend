@@ -20,9 +20,8 @@ public class Emprendedor {
     @Column(name = "ID_EMPRE")
     private Long idempre;
 
-    @Lob
-    @Column(name = "IMAGENEMPRE", columnDefinition = "LONGBLOB")
-    private byte[] imgenemp;
+    @Column(name = "IMAGENEMPRE")
+    private String imgempre;
 
     @Column(name = "NOMBEMP", length = 40)
     private String nombreemp;

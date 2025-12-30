@@ -2,6 +2,7 @@ package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.UsuarioMapper;
+import com.emprendeStore.application.service.CloudinaryService;
 import com.emprendeStore.application.service.EmailService;
 import com.emprendeStore.application.service.UsuarioService;
 import com.emprendeStore.domain.model.Usuario;
@@ -13,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository ur;
     private final PasswordEncoder pe;
     private final EmailService es;
+    private final CloudinaryService cs;
 
     @Override
     @Transactional
@@ -59,5 +62,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         return um.toDto(u);
     }
 
+    @Override
+    @Transactional
+    public UsuarioResponseDto saveAndupdateImagenUsuario(Long idUsuario, MultipartFile imagen) {
+        Usuario u = ur.findById(idUsuario).orElseThrow(() -> new ErrorNegocio("El Usuario con el id: " + idUsuario + " no existe"));
+        if (u.getImagenUsu() != null && !u.getImagenUsu().isEmpty()) {
+            cs.deleteImage(u.getImagenUsu());
+        }
+
+        String urlimg = cs.uploadClienteImage(imagen);
+        u.setImagenUsu(urlimg);
+        return um.toDto(u);
+    }
 
 }

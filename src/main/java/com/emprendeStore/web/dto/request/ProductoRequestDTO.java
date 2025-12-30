@@ -20,7 +20,7 @@ public class ProductoRequestDTO {
     @Min(value = 0, message = "El stock no puede ser negativo")
     private int stock;
     // La imagen es opcional
-    private byte[] imgpro;
+    private String imgpro;
     @NotNull(message = "El ID de la categoría no puede ser nulo")
     private Long idCategoria;
     @NotNull(message = "El ID del emprendedor no puede ser nulo")

@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class UpdateUsuarioRequestDto {
-    private String imgusu;
     @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
     private String nombreReal;
     @Email(message = "El formato del correo no es válido")

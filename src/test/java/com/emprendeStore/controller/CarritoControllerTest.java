@@ -31,7 +31,7 @@ public class CarritoControllerTest {
     void obtenerCarrito() {
         // Arrange
         CarritoResponseDto responseMock = generarCarritoResponseDto();
-        when(carritoService.obtenerCarrito(1L)).thenReturn(responseMock);
+        when(carritoService.getCarrito(1L)).thenReturn(responseMock);
 
         // Act
         ResponseEntity<CarritoResponseDto> response = carritoController.obtenerCarrito(1L);
@@ -63,7 +63,7 @@ public class CarritoControllerTest {
     void actualizarCantidadItem() {
         // Arrange
         CarritoResponseDto responseMock = generarCarritoResponseDto();
-        when(carritoService.actualizarCantidadItem(1L, 5L, 3)).thenReturn(responseMock);
+        when(carritoService.updateCantidadItem(1L, 5L, 3)).thenReturn(responseMock);
 
         // Act
         ResponseEntity<CarritoResponseDto> response = carritoController.actualizarCantidadItem(1L, 5L, 3);

@@ -1,6 +1,7 @@
 package com.emprendeStore.servicetest;
 
 import com.emprendeStore.application.mapper.UsuarioMapper;
+import com.emprendeStore.application.service.CloudinaryService;
 import com.emprendeStore.application.service.EmailService;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.domain.repository.UsuarioRepository;
@@ -41,9 +42,12 @@ public class UsuarioServiceImplTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
+    @Mock
+    CloudinaryService cs;
+
     @BeforeEach
     void setUp() {
-        usuarioServiceImpl = new com.emprendeStore.application.service.impl.UsuarioServiceImpl(usuarioMapper, usuarioRepo, passwordEncoder, emailService);
+        usuarioServiceImpl = new com.emprendeStore.application.service.impl.UsuarioServiceImpl(usuarioMapper, usuarioRepo, passwordEncoder, emailService, cs);
     }
 
     @AfterEach

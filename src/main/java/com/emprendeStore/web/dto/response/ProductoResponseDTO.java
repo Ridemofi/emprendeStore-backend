@@ -14,7 +14,7 @@ public class ProductoResponseDTO {
     private String descrip;
     private BigDecimal precio;
     private int stock;
-    private byte[] imgpro;
+    private String imgpro;
     private String estadoProducto;
     private LocalDate fechaRegistro;
     private Long idCategoria;

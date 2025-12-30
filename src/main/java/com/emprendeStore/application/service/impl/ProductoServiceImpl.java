@@ -17,9 +17,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +32,17 @@ public class ProductoServiceImpl implements ProductoService {
     private final ProductoRepository pr;
     private final CategoriaRepository cr;
     private final EmprendedorRepository er;
+    private final CloudinaryServiceImpl cs;
 
     @Override
     @Transactional
-    public ProductoResponseDTO saveProducto(ProductoRequestDTO dto) {
-        Categoria c = cr.findById(dto.getIdCategoria())
-                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        Emprendedor e = er.findById(dto.getIdEmprendedor())
-                .orElseThrow(() -> new RuntimeException("Emprendedor no encontrado"));
+    public ProductoResponseDTO saveProducto(ProductoRequestDTO dto, MultipartFile imgpro) {
+        Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        Emprendedor e = er.findById(dto.getIdEmprendedor()).orElseThrow(() -> new RuntimeException("Emprendedor no encontrado"));
+        if(imgpro!=null && !imgpro.isEmpty()){
+            String urlimg = cs.uploadProductoImage(imgpro);
+            dto.setImgpro(urlimg);
+        }
         Producto p = pm.toEntity(dto, c, e);
         p.recalcularEstado();
         pr.save(p);
@@ -50,6 +53,9 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoResponseDTO deleteProducto(Long id) {
         Producto p = pr.findById(id).orElseThrow(() -> new ErrorNegocio("El Producto con el id: " + id + " no existe"));
+        if(p.getImgPro()!=null && !p.getImgPro().isEmpty()){
+            cs.deleteImage(p.getImgPro());
+        }
         pr.delete(p);
         return pm.toDto(p);
     }
@@ -62,13 +68,6 @@ public class ProductoServiceImpl implements ProductoService {
         if (dto.getIdCategoria() != null) {
             Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new ErrorNegocio("Categoría no encontrada"));
             p.setCategoria(c);
-        }
-        if (dto.getImgpro() != null && !dto.getImgpro().isEmpty()) {
-            try {
-                p.setImgPro(Base64.getDecoder().decode(dto.getImgpro()));
-            } catch (IllegalArgumentException e) {
-                throw new ErrorNegocio("Imagen Base64 inválida");
-            }
         }
         if (StringUtils.hasText(dto.getEstado())) {
             p.cambiarEstado(EstadoProducto.obtenerDesde(dto.getEstado()));
@@ -115,5 +114,17 @@ public class ProductoServiceImpl implements ProductoService {
         estadisticas.put("valorTotalInventario", valorInventario);
 
         return estadisticas;
+    }
+
+    @Override
+    @Transactional
+    public ProductoResponseDTO updateImagenProducto(Long idProducto, MultipartFile imgpro) {
+        Producto p= pr.findById(idProducto).orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
+        if(p.getImgPro()!=null && !p.getImgPro().isEmpty()){
+            cs.deleteImage(p.getImgPro());
+        }
+        String urlimg = cs.uploadProductoImage(imgpro);
+        p.setImgPro(urlimg);
+        return pm.toDto(p);
     }
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,6 +45,12 @@ public class UsuarioController {
     public ResponseEntity<String>updateUsu(@Valid @RequestBody UpdateUsuarioRequestDto uDto, @PathVariable Long id){
         us.updateUsu(uDto, id);
         return ResponseEntity.ok("Usuario: " + id + " actualizado correctamente");
+    }
+
+    @Operation(summary = "Actualiza la imagen de un usuario", description = "Sube una imagen a Cloudinary y actualiza la URL en el usuario")
+    @PostMapping("/{id}/imagen")
+    public ResponseEntity<UsuarioResponseDto> actualizarImagenUsuario(@PathVariable Long id, @RequestParam("imagen") MultipartFile imagen) {
+        return ResponseEntity.ok(us.saveAndupdateImagenUsuario(id, imagen));
     }
 
 }
