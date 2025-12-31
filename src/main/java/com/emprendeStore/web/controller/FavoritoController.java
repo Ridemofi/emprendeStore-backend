@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/favorito")
+@RequestMapping("/api/favorito")
 @CrossOrigin("*")
 public class FavoritoController {
     private final FavoritoService fs;

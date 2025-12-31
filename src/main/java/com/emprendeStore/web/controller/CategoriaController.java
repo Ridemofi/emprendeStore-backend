@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/categoria")
+@RequestMapping("/api/categoria")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class CategoriaController {
@@ -25,6 +25,7 @@ public class CategoriaController {
 
     @GetMapping("/listartodocat")
     public ResponseEntity<List<CategoriaResponseDTO>> listarcategorias(){
+
         return ResponseEntity.ok(cs.listatodo());
     }
 

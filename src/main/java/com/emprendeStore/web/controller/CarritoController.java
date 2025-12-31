@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("api/carrito")
+@RequestMapping("/api/carrito")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class CarritoController {
