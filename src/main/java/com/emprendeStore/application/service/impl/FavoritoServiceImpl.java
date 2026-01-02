@@ -1,5 +1,6 @@
 package com.emprendeStore.application.service.impl;
 
+import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.FavoritosMapper;
 import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.FavoritoService;
@@ -31,11 +32,11 @@ public class FavoritoServiceImpl implements FavoritoService {
     @Transactional
     public FavoritoResponseDto savefav(FavoritoRequestDto dto) {
         Usuario u = ur.findById(dto.getIdUsu())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ErrorNegocio("Usuario no encontrado"));
         Producto p = pr.findById(dto.getIdPro())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
         if (fr.findByUsuarioIdUsuAndProductoIdProducto(u.getIdUsu(), p.getIdProducto()).isPresent()) {
-            throw new RuntimeException("Ya existe en favoritos");
+            throw new ErrorNegocio("Ya existe en favoritos");
         }
         Favoritos f=fm.toEntity(dto, u, p);
         fr.save(f);

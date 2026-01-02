@@ -4,9 +4,11 @@ import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.ProductoService;
 import com.emprendeStore.domain.Estados.EstadoProducto;
+import com.emprendeStore.domain.model.Carrito;
 import com.emprendeStore.domain.model.Categoria;
 import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.model.Producto;
+import com.emprendeStore.domain.repository.CarritoRepository;
 import com.emprendeStore.domain.repository.CategoriaRepository;
 import com.emprendeStore.domain.repository.EmprendedorRepository;
 import com.emprendeStore.domain.repository.ProductoRepository;
@@ -15,11 +17,13 @@ import com.emprendeStore.web.dto.request.UpdateProductoRequestDto;
 import com.emprendeStore.web.dto.response.ProductoResponseDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +37,13 @@ public class ProductoServiceImpl implements ProductoService {
     private final CategoriaRepository cr;
     private final EmprendedorRepository er;
     private final CloudinaryServiceImpl cs;
+    private final CarritoRepository carritoRepository;
 
     @Override
     @Transactional
     public ProductoResponseDTO saveProducto(ProductoRequestDTO dto, MultipartFile imgpro) {
-        Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        Emprendedor e = er.findById(dto.getIdEmprendedor()).orElseThrow(() -> new RuntimeException("Emprendedor no encontrado"));
+        Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new ErrorNegocio("Categoría no encontrada"));
+        Emprendedor e = er.findById(dto.getIdEmprendedor()).orElseThrow(() -> new ErrorNegocio("Emprendedor no encontrado"));
         if(imgpro!=null && !imgpro.isEmpty()){
             String urlimg = cs.uploadProductoImage(imgpro);
             dto.setImgpro(urlimg);
@@ -126,5 +131,36 @@ public class ProductoServiceImpl implements ProductoService {
         String urlimg = cs.uploadProductoImage(imgpro);
         p.setImgPro(urlimg);
         return pm.toDto(p);
+    }
+
+    @Override
+    public List<ProductoResponseDTO> listarRecomendacionesCarrito(Long idUsuario) {
+        Carrito c = carritoRepository.findByUsuarioIdUsu(idUsuario).orElse(null);
+        if (c == null || c.getDetalles().isEmpty()) {
+            System.out.println("Usuario " + idUsuario + " no tiene carrito o está vacío. No se generan recomendaciones.");
+            return new ArrayList<>();
+        }
+
+        List<Long> catIds = c.getDetalles().stream()
+                .map(d -> d.getProducto().getCategoria().getIdCategoria())
+                .distinct()
+                .toList();
+        System.out.println("Categorías encontradas en el carrito: " + catIds);
+
+        List<Long> productosEnCarritoIds = c.getDetalles().stream()
+                .map(d -> d.getProducto().getIdProducto())
+                .toList();
+        System.out.println("Productos a excluir (ya en el carrito): " + productosEnCarritoIds);
+
+        List<Producto> recomendaciones = pr.findRecomendaciones(
+                catIds,
+                productosEnCarritoIds, 
+                PageRequest.of(0, 10)
+        );
+        System.out.println("Se encontraron " + recomendaciones.size() + " recomendaciones en la base de datos.");
+
+        return recomendaciones.stream()
+                .map(pm::toDto)
+                .toList();
     }
 }

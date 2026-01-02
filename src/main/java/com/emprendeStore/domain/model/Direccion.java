@@ -30,6 +30,9 @@ public class Direccion {
     @Column(name = "TELEFONO_CONTACTO", nullable = false, length = 20)
     private String telefonoContacto;
 
+    @Column(name = "DOCUMENTO_IDENTIDAD", length = 20)
+    private String documentoIdentidad;
+
     @ManyToOne
     @JoinColumn(name = "ID_PAIS", nullable = false)
     private Pais pais;

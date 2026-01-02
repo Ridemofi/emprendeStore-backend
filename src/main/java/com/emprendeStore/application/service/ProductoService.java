@@ -17,4 +17,5 @@ public interface ProductoService {
     List<ProductoResponseDTO> buscarProductosParaGestion(Long idEmprendedor, String texto);
     Map<String, Object> obtenerEstadisticas(Long idEmprendedor);
     ProductoResponseDTO updateImagenProducto(Long idProducto, MultipartFile imgpro);
+    List<ProductoResponseDTO> listarRecomendacionesCarrito(Long idUsuario);
 }

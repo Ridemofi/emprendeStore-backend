@@ -78,4 +78,10 @@ public class ProductoController {
     public ResponseEntity<ProductoResponseDTO> actualizarImagenProducto(@PathVariable Long id, @RequestParam("imgpro") MultipartFile imgpro) {
         return ResponseEntity.ok(ps.updateImagenProducto(id, imgpro));
     }
+
+    @Operation(summary = "Obtener Recomendaciones", description = "Obtiene productos recomendados basados en el carrito del usuario")
+    @GetMapping("/recomendaciones/{idUsuario}")
+    public ResponseEntity<List<ProductoResponseDTO>> obtenerRecomendaciones(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(ps.listarRecomendacionesCarrito(idUsuario));
+    }
 }

@@ -22,6 +22,7 @@ public class DireccionMapperImpl implements DireccionMapper {
                 .usuario(u)
                 .nombreContacto(dto.getNombreContacto())
                 .telefonoContacto(dto.getTelefono())
+                .documentoIdentidad(dto.getDocumentoIdentidad())
                 .pais(p)
                 .ubicacionNivel1(un1)
                 .ubicacionNivel2(un2)
@@ -40,6 +41,7 @@ public class DireccionMapperImpl implements DireccionMapper {
                 .idDireccion(d.getIdDir())
                 .nombreContacto(d.getNombreContacto())
                 .telefono(d.getTelefonoContacto())
+                .documentoIdentidad(d.getDocumentoIdentidad())
                 // Usamos el método renombrado toPaisDto
                 .pais(um.toPaisDto(d.getPais(), configPais))
                 // Extraemos los nombres de las ubicaciones si existen (pueden ser null)
@@ -57,6 +59,7 @@ public class DireccionMapperImpl implements DireccionMapper {
     public void updateEntity(Direccion d, DireccionRequestDto dto, Pais p, UbicacionNivel1 un1, UbicacionNivel2 un2, UbicacionNivel3 un3) {
         d.setNombreContacto(dto.getNombreContacto());
         d.setTelefonoContacto(dto.getTelefono());
+        d.setDocumentoIdentidad(dto.getDocumentoIdentidad());
         d.setPais(p);
         d.setUbicacionNivel1(un1);
         d.setUbicacionNivel2(un2);

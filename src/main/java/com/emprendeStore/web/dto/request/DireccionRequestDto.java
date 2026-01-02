@@ -16,6 +16,8 @@ public class DireccionRequestDto {
     @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
 
+    private String documentoIdentidad;
+
     @NotNull(message = "El país es obligatorio")
     private Long idPais;
 

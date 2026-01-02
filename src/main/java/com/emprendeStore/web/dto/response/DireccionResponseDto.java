@@ -9,6 +9,7 @@ public class DireccionResponseDto {
     private Long idDireccion;
     private String nombreContacto;
     private String telefono;
+    private String documentoIdentidad;
     private PaisResponseDto pais;
     private String ubicacionNivel1;
     private String ubicacionNivel2;

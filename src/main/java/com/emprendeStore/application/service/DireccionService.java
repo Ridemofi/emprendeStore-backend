@@ -11,4 +11,5 @@ public interface DireccionService {
     DireccionResponseDto obtenerDireccionPrincipal(Long idUsuario);
     DireccionResponseDto updateDireccion(Long idDireccion, DireccionRequestDto dto);
     void deleteDireccion(Long idDireccion);
+    void establecerPrincipal(Long idDireccion);
 }

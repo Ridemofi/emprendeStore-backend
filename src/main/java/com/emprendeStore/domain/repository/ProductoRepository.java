@@ -2,6 +2,7 @@ package com.emprendeStore.domain.repository;
 
 import com.emprendeStore.domain.Estados.EstadoProducto;
 import com.emprendeStore.domain.model.Producto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -48,4 +49,15 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     BigDecimal calcularValorTotalInventarioByEmprendedor(@Param("idEmprendedor") Long idEmprendedor);
 
     long countByEmprendedorIdempre(Long idEmprendedor);
+
+    @Query("SELECT p FROM Producto p " +
+           "WHERE p.categoria.idCategoria IN :catIds " +
+           "AND p.idProducto NOT IN :excludedIds " +
+           "AND p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
+           "ORDER BY FUNCTION('RAND')")
+    List<Producto> findRecomendaciones(
+            @Param("catIds") List<Long> catIds, 
+            @Param("excludedIds") List<Long> excludedIds, 
+            Pageable pageable
+    );
 }

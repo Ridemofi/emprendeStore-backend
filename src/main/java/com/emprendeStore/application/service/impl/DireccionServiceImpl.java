@@ -37,12 +37,11 @@ public class DireccionServiceImpl implements DireccionService {
                 un2r.findById(dto.getIdUbicacionNivel2()).orElse(null) : null;
         UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? 
                 un3r.findById(dto.getIdUbicacionNivel3()).orElse(null) : null;
-
         List<Direccion> direccionesUsuario = dr.findByUsuarioIdUsu(u.getIdUsu());
         if (direccionesUsuario.isEmpty()) {
             dto.setEsPrincipal(true);
-        } else if (dto.isEsPrincipal()) {
-            desmarcarPrincipal(u.getIdUsu());
+        } else {
+            dto.setEsPrincipal(false);
         }
 
         Direccion d = dm.toEntity(dto, u, p, un1, un2, un3);
@@ -75,10 +74,15 @@ public class DireccionServiceImpl implements DireccionService {
         UbicacionNivel1 un1 = dto.getIdUbicacionNivel1() != null ? un1r.findById(dto.getIdUbicacionNivel1()).orElse(null) : null;
         UbicacionNivel2 un2 = dto.getIdUbicacionNivel2() != null ? un2r.findById(dto.getIdUbicacionNivel2()).orElse(null) : null;
         UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? un3r.findById(dto.getIdUbicacionNivel3()).orElse(null) : null;
-        if (dto.isEsPrincipal() && !d.getEsPrincipal()) {
-            desmarcarPrincipal(d.getUsuario().getIdUsu());
-        }
+        
+        // Preservamos el estado original de 'esPrincipal'
+        boolean eraPrincipal = d.getEsPrincipal();
+        
+        // Actualizamos la entidad con los datos del DTO
         dm.updateEntity(d, dto, p, un1, un2, un3);
+        
+        // Restauramos el estado original de 'esPrincipal' para ignorar lo que venga en el DTO
+        d.setEsPrincipal(eraPrincipal);
         dr.save(d);
         return dm.toDto(d);
     }
@@ -87,6 +91,20 @@ public class DireccionServiceImpl implements DireccionService {
     public void deleteDireccion(Long idDireccion) {
         Direccion d = dr.findById(idDireccion).orElseThrow(() -> new ErrorNegocio("Direccion no encontrada"));
         dr.delete(d);
+    }
+
+    @Override
+    @Transactional
+    public void establecerPrincipal(Long idDireccion) {
+        Direccion d = dr.findById(idDireccion)
+                .orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
+        
+        if (d.getEsPrincipal()) return;
+
+        desmarcarPrincipal(d.getUsuario().getIdUsu());
+
+        d.setEsPrincipal(true);
+        dr.save(d);
     }
 
     private void desmarcarPrincipal(Long idUsuario) {

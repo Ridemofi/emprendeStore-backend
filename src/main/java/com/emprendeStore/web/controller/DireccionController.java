@@ -37,6 +37,12 @@ public class DireccionController {
         return ResponseEntity.ok(ds.updateDireccion(idDireccion, dto));
     }
 
+    @PatchMapping("/establecer-principal/{idDireccion}")
+    public ResponseEntity<Void> establecerPrincipal(@PathVariable Long idDireccion) {
+        ds.establecerPrincipal(idDireccion);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/eliminar/{idDireccion}")
     public ResponseEntity<Void> eliminarDireccion(@PathVariable Long idDireccion) {
         ds.deleteDireccion(idDireccion);
