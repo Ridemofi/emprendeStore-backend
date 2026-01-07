@@ -35,6 +35,7 @@ public class DetalleCarritoMapperImpl implements DetalleCarritoMapper {
                 .precioUnitario(dc.getPrecioUnitario())
                 .cantidad(dc.getCantidad())
                 .subtotal(st)
+                .seleccionado(dc.getSeleccionado())
                 .build();
     }
 }

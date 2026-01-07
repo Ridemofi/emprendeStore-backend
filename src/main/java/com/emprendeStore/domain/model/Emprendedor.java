@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class Emprendedor {
 
     @Column(name = "PASSWORD", nullable = false, length = 100)
     private String passwordempre;
+
+    @Column(name = "SALDO" , nullable = false)
+    private BigDecimal saldo;
 
     @Column(name = "ROL", nullable = false, length = 20)
     @Builder.Default

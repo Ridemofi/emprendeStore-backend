@@ -20,8 +20,7 @@ public class Producto {
     private Long idProducto;
     @Column(name = "NOMBPRO", nullable = false, length = 150)
     private String nombreProd;
-    @Column(name = "DESCRPRO")
-    @Lob
+    @Column(name = "DESCRPRO", columnDefinition = "TEXT")
     private String descrip;
     @Column(name = "PRECIO", nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;

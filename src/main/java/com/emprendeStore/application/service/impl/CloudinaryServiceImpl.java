@@ -21,7 +21,8 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
     private String uploadToFolder(MultipartFile file, String folder) {
         try {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = (Map<String, Object>) cloudinary.uploader().upload(
                     file.getBytes(),
                     ObjectUtils.asMap("folder", folder)
             );
@@ -88,7 +89,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 String pathWithVersion = parts[1];
 
                 // 3. Decodificar URL (Vital para espacios: %20 -> " ")
-                pathWithVersion = URLDecoder.decode(pathWithVersion, StandardCharsets.UTF_8.toString());
+                pathWithVersion = URLDecoder.decode(pathWithVersion, StandardCharsets.UTF_8);
 
                 // 4. Quitar versión (ej: v17354823/)
                 // El regex busca 'v' seguido de números y una barra al inicio
@@ -102,7 +103,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 return path;
             }
         } catch (Exception e) {
-            e.printStackTrace(); // O usar un logger
+            System.err.println("Error al extraer public_id de Cloudinary: " + e.getMessage());
             return null;
         }
         return null;

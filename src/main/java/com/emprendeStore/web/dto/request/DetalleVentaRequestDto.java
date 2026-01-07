@@ -1,4 +1,4 @@
-package com.emprendeStore.web.dto.response;
+package com.emprendeStore.web.dto.request;
 
 import lombok.*;
 
@@ -7,11 +7,9 @@ import java.math.BigDecimal;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class DetalleCarritoResponseDto {
-    private Long idDetalle;
+public class DetalleVentaRequestDto {
+    private String nombreProducto;
     private Integer cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
-    private ProductoResponseDTO producto;
-    private Boolean seleccionado;
 }

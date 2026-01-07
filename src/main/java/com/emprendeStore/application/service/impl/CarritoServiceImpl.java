@@ -2,6 +2,7 @@ package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.CarritoMapper;
+import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.CarritoService;
 import com.emprendeStore.domain.model.Carrito;
 import com.emprendeStore.domain.model.DetalleCarrito;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class CarritoServiceImpl implements CarritoService {
     private final CarritoMapper cm;
     private final UsuarioRepository ur;
     private final ProductoRepository pr;
+    private final ProductorMapper pm;
 
     private Carrito obtenerOCrearCarrito(Long idUsuario) {
         return cr.findByUsuarioIdUsu(idUsuario)
@@ -43,8 +46,8 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     @Transactional
     public CarritoResponseDto getCarrito(Long idUsuario) {
-        Carrito carrito = obtenerOCrearCarrito(idUsuario);
-        return cm.toDto(carrito);
+        Carrito c = obtenerOCrearCarrito(idUsuario);
+        return cm.toDto(c);
     }
 
     @Override
@@ -123,5 +126,36 @@ public class CarritoServiceImpl implements CarritoService {
         }
         d.setSeleccionado(seleccionado);
         dcr.save(d);
+    }
+
+    @Override
+    public BigDecimal calcularCostoEnvio(Long idUsuario) {
+        return dcr.calcularCostoEnvioPorUsuario(idUsuario);
+    }
+
+    @Override
+    @Transactional
+    public void limpiarCarrito(Long idUsuario) {
+        Carrito c = cr.findByUsuarioIdUsu(idUsuario).orElseThrow(() -> new ErrorNegocio("Carrito no encontrado"));
+        c.getDetalles().stream()
+                .filter(DetalleCarrito::getSeleccionado)
+                .toList()
+                .forEach(detalle -> {
+                    c.getDetalles().remove(detalle);
+                    dcr.delete(detalle);
+                });
+    }
+
+    @Override
+    public CarritoResponseDto getProductosSeleccionados(Long idUsuario) {
+        Carrito c = obtenerOCrearCarrito(idUsuario);
+        List<DetalleCarrito> detallesSeleccionados = dcr.findDetallesSeleccionadosPorUsuario(idUsuario);
+        // Creamos una copia del carrito pero solo con los detalles seleccionados
+        Carrito carritoFiltrado = new Carrito();
+        carritoFiltrado.setIdCarrito(c.getIdCarrito());
+        carritoFiltrado.setUsuario(c.getUsuario());
+        carritoFiltrado.setFechaCreacion(c.getFechaCreacion());
+        carritoFiltrado.setDetalles(detallesSeleccionados);
+        return cm.toDto(carritoFiltrado);
     }
 }

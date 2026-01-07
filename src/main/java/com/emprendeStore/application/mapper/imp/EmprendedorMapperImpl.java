@@ -31,6 +31,7 @@ public class EmprendedorMapperImpl implements EmprendedorMapper {
                 .nombep(e.getNombreemp())
                 .correo(e.getCorreoemp())
                 .nrocell(e.getNrocellemp())
+                .saldo(e.getSaldo())
                 .fechaingreso(e.getFecharegistroemp())
                 .build();
     }

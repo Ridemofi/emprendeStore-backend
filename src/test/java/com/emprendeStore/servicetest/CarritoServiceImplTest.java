@@ -1,6 +1,7 @@
 package com.emprendeStore.servicetest;
 
 import com.emprendeStore.application.mapper.CarritoMapper;
+import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.impl.CarritoServiceImpl;
 import com.emprendeStore.domain.model.Carrito;
 import com.emprendeStore.domain.model.DetalleCarrito;
@@ -48,9 +49,12 @@ public class CarritoServiceImplTest {
     @Mock
     CarritoMapper carritoMapper;
 
+    @Mock
+    ProductorMapper productoMapper;
+
     @BeforeEach
     void setUp() {
-        carritoServiceImpl = new CarritoServiceImpl(detalleCarritoRepo, carritoRepo, carritoMapper, usuarioRepo, productoRepo);
+        carritoServiceImpl = new CarritoServiceImpl(detalleCarritoRepo, carritoRepo, carritoMapper, usuarioRepo, productoRepo, productoMapper);
     }
 
     @AfterEach

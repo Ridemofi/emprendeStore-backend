@@ -20,8 +20,7 @@ public class Categoria {
     private byte[] imgCat;
     @Column(name = "NOMBRE_CAT", nullable = false, unique = true, length = 100)
     private String nombreCat;
-    @Column(name = "DESCRIPCION")
-    @Lob
+    @Column(name = "DESCRIPCION", columnDefinition = "TEXT")
     private String descripcion;
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Producto> productos;

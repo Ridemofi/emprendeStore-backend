@@ -2,6 +2,7 @@ package com.emprendeStore.web.dto.response;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter @Setter
@@ -15,5 +16,6 @@ public class EmprendedorResponseDto {
     private String correo;
     private String nrocell;
     private LocalDate fechaingreso;
+    private BigDecimal saldo;
 
 }

@@ -40,6 +40,7 @@ public class ProductorMapperImpl implements ProductorMapper {
                 .idCategoria(p.getCategoria().getIdCategoria())
                 .nombreCategoria(p.getCategoria().getNombreCat())
                 .idEmprendedor(p.getEmprendedor().getIdempre())
+                .fechaRegistro(p.getFechaRegistro())
                 .build();
     }
 
