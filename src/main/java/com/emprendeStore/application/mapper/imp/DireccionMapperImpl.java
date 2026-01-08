@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class DireccionMapperImpl implements DireccionMapper {
 
     private final UbicacionMapper um;
-    private final ConfigPaisRepository cpr;
 
     @Override
     public Direccion toEntity(DireccionRequestDto dto, Usuario u, Pais p, UbicacionNivel1 un1, UbicacionNivel2 un2, UbicacionNivel3 un3) {
@@ -36,7 +35,7 @@ public class DireccionMapperImpl implements DireccionMapper {
 
     @Override
     public DireccionResponseDto toDto(Direccion d) {
-        ConfigPais configPais = cpr.findById(d.getPais().getIdPais()).orElse(null);
+        ConfigPais configPais = d.getPais().getConfigPais();
         return DireccionResponseDto.builder()
                 .idDireccion(d.getIdDir())
                 .nombreContacto(d.getNombreContacto())

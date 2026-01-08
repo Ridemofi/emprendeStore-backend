@@ -4,7 +4,6 @@ import com.emprendeStore.application.mapper.FavoritosMapper;
 import com.emprendeStore.domain.model.Favoritos;
 import com.emprendeStore.domain.model.Producto;
 import com.emprendeStore.domain.model.Usuario;
-import com.emprendeStore.web.dto.request.FavoritoRequestDto;
 import com.emprendeStore.web.dto.response.FavoritoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class FavoritosMapperImpl implements FavoritosMapper {
 
     @Override
-    public Favoritos toEntity(FavoritoRequestDto dto, Usuario u, Producto p) {
+    public Favoritos toEntity(Usuario u, Producto p) {
         return Favoritos.builder()
                 .usuario(u)
                 .producto(p)

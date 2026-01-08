@@ -9,36 +9,36 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "PRODUCTOS")
+@Table(name = "productos")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PRO")
+    @Column(name = "id_pro")
     private Long idProducto;
-    @Column(name = "NOMBPRO", nullable = false, length = 150)
+    @Column(name = "nombpro", nullable = false, length = 150)
     private String nombreProd;
-    @Column(name = "DESCRPRO", columnDefinition = "TEXT")
+    @Column(name = "descrpro", columnDefinition = "TEXT")
     private String descrip;
-    @Column(name = "PRECIO", nullable = false, precision = 10, scale = 2)
+    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
-    @Column(name = "STOCKA", nullable = false)
+    @Column(name = "stocka", nullable = false)
     private int stock;
-    @Column(name = "IMGPRO", length = 255, nullable = true)
+    @Column(name = "imgpro", length = 255, nullable = true)
     private String imgPro;
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO", nullable = false)
+    @Column(name = "estado", nullable = false)
     private EstadoProducto estadoProducto;
     @CreationTimestamp
-    @Column(name = "FECHA_REGISTRO", updatable = false)
+    @Column(name = "fecha_registro", updatable = false)
     private LocalDate fechaRegistro;
     @ManyToOne
-    @JoinColumn(name = "ID_CAT", nullable = false)
+    @JoinColumn(name = "id_cat", nullable = false)
     private Categoria categoria;
     @ManyToOne
-    @JoinColumn(name = "ID_EMPRE", nullable = false)
+    @JoinColumn(name = "id_empre", nullable = false)
     private Emprendedor emprendedor;
 
     public void cambiarEstado(EstadoProducto nuevoEstado) {

@@ -33,10 +33,10 @@ public class CarritoServiceImpl implements CarritoService {
     private final ProductorMapper pm;
 
     private Carrito obtenerOCrearCarrito(Long idUsuario) {
-        return cr.findByUsuarioIdUsu(idUsuario)
+        return cr.findByUsuarioWithDetalles(idUsuario)
                 .orElseGet(() -> {
-                    Usuario usuario = ur.findById(idUsuario)
-                            .orElseThrow(() -> new ErrorNegocio("Usuario no encontrado"));
+                    //getReferenceById para no gastar recursos trayendo datos del usuario
+                    Usuario usuario = ur.getReferenceById(idUsuario);
                     Carrito nuevoCarrito = new Carrito();
                     nuevoCarrito.setUsuario(usuario);
                     return cr.save(nuevoCarrito);
@@ -54,9 +54,6 @@ public class CarritoServiceImpl implements CarritoService {
     @Transactional
     public CarritoResponseDto agregarProducto(Long idUsuario, Long idProducto) {
         Carrito carrito = obtenerOCrearCarrito(idUsuario);
-        Producto producto = pr.findById(idProducto)
-                .orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
-
         Optional<DetalleCarrito> detalleOpt = carrito.getDetalles().stream()
                 .filter(d -> d.getProducto().getIdProducto().equals(idProducto))
                 .findFirst();
@@ -65,6 +62,7 @@ public class CarritoServiceImpl implements CarritoService {
             DetalleCarrito detalle = detalleOpt.get();
             detalle.setCantidad(detalle.getCantidad() + 1);
         } else {
+            Producto producto = pr.findById(idProducto).orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
             DetalleCarrito nuevoDetalle = DetalleCarrito.builder()
                     .carrito(carrito)
                     .producto(producto)
@@ -120,12 +118,8 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     @Transactional
     public void updateSeleccionItem(Long idUsuario, Long idDetalleCarrito, boolean seleccionado) {
-        DetalleCarrito d = dcr.findById(idDetalleCarrito).orElseThrow(() -> new ErrorNegocio("Ítem del carrito no encontrado"));
-        if (!d.getCarrito().getUsuario().getIdUsu().equals(idUsuario)) {
-            throw new ErrorNegocio("Acceso denegado. No puedes modificar ítems de otro usuario.");
-        }
-        d.setSeleccionado(seleccionado);
-        dcr.save(d);
+        int filasActualizadas = dcr.actualizarSeleccion(idUsuario, idDetalleCarrito, seleccionado);
+        if (filasActualizadas == 0) throw new ErrorNegocio("Error al actualizar ítem");
     }
 
     @Override
@@ -136,14 +130,7 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     @Transactional
     public void limpiarCarrito(Long idUsuario) {
-        Carrito c = cr.findByUsuarioIdUsu(idUsuario).orElseThrow(() -> new ErrorNegocio("Carrito no encontrado"));
-        c.getDetalles().stream()
-                .filter(DetalleCarrito::getSeleccionado)
-                .toList()
-                .forEach(detalle -> {
-                    c.getDetalles().remove(detalle);
-                    dcr.delete(detalle);
-                });
+        dcr.deleteSeleccionadosPorUsuario(idUsuario);
     }
 
     @Override

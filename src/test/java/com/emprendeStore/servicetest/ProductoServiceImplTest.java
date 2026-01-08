@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -57,14 +58,14 @@ public class ProductoServiceImplTest {
     @Test
     void listarnuevosproductos_deberiaRetornarListaDeDTOs() {
         List<Producto> productosMock = generarListaProductos();
-        when(productoRepo.findRecienLlegados()).thenReturn(productosMock);
+        when(productoRepo.findRecienLlegados(Pageable.ofSize(8))).thenReturn(productosMock);
         when(productoMapper.toDto(any(Producto.class))).thenAnswer(invocation -> {
             Producto p = invocation.getArgument(0);
             return ProductoResponseDTO.builder().id(p.getIdProducto()).nombreProd(p.getNombreProd()).build();
         });
         List<ProductoResponseDTO> resultado = productoService.listarnuevosproductos();
         assertEquals(2, resultado.size());
-        verify(productoRepo, times(1)).findRecienLlegados();
+        verify(productoRepo, times(1)).findRecienLlegados(Pageable.ofSize(8));
         verify(productoMapper, times(2)).toDto(any(Producto.class));
     }
 

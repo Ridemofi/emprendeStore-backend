@@ -49,7 +49,7 @@ public class PedidoServiceImpl implements PedidoService {
         String idTransaccion = generarCodigoPedido();
         
         Pedido pe = pm.toEntity(request, u, idTransaccion, costoEnvio, crearSnapshotDireccion(dire));
-        
+        //guardar para conseguir el id
         pe = peRepo.save(pe);
 
         Map<Emprendedor, List<DetalleCarrito>> itemsPorEmprendedor = detallesSeleccionados.stream()

@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CategoriaRepository extends JpaRepository<Categoria,Long> {
-    @Query(value = "SELECT c.ID_CAT, c.NOMBRE_CAT, c.DESCRIPCION, c.IMGCAT " +
-            "FROM CATEGORIA c " +
-            "JOIN PRODUCTOS p ON c.ID_CAT = p.ID_CAT " +
-            "JOIN DETALLE_VENTA dv ON p.ID_PRO = dv.ID_PRO " +
-            "GROUP BY c.ID_CAT, c.NOMBRE_CAT, c.DESCRIPCION, c.IMGCAT " +
-            "ORDER BY SUM(dv.CANTIDAD) DESC LIMIT 4", nativeQuery = true)
+    @Query(value = "SELECT c.id_cat, c.nombre_cat, c.descripcion, c.imgcat " +
+            "FROM categoria c " +
+            "JOIN productos p ON c.id_cat = p.id_cat " +
+            "JOIN detalle_venta dv ON p.id_pro = dv.id_pro " +
+            "GROUP BY c.id_cat, c.nombre_cat, c.descripcion, c.imgcat " +
+            "ORDER BY SUM(dv.cantidad) DESC LIMIT 4", nativeQuery = true)
     List<Categoria> findCategoriasPopulares();
 }

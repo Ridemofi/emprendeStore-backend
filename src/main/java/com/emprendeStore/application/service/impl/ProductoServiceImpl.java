@@ -18,6 +18,7 @@ import com.emprendeStore.web.dto.response.ProductoResponseDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +43,8 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     @Transactional
     public ProductoResponseDTO saveProducto(ProductoRequestDTO dto, MultipartFile imgpro) {
-        Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new ErrorNegocio("Categoría no encontrada"));
-        Emprendedor e = er.findById(dto.getIdEmprendedor()).orElseThrow(() -> new ErrorNegocio("Emprendedor no encontrado"));
+        Categoria c = cr.getReferenceById(dto.getIdCategoria());
+        Emprendedor e = er.getReferenceById(dto.getIdEmprendedor());
         if(imgpro!=null && !imgpro.isEmpty()){
             String urlimg = cs.uploadProductoImage(imgpro);
             dto.setImgpro(urlimg);
@@ -85,7 +86,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<ProductoResponseDTO> listarnuevosproductos() {
-        return pr.findRecienLlegados()
+        return pr.findRecienLlegados(Pageable.ofSize(8))
                 .stream()
                 .map(pm::toDto)
                 .toList();
@@ -135,9 +136,8 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<ProductoResponseDTO> listarRecomendacionesCarrito(Long idUsuario) {
-        Carrito c = carritoRepository.findByUsuarioIdUsu(idUsuario).orElse(null);
+        Carrito c = carritoRepository.findByUsuarioWithDetalles(idUsuario).orElse(null);
         if (c == null || c.getDetalles().isEmpty()) {
-            System.out.println("Usuario " + idUsuario + " no tiene carrito o está vacío. No se generan recomendaciones.");
             return new ArrayList<>();
         }
 

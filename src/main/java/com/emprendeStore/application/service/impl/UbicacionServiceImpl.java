@@ -2,7 +2,6 @@ package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.mapper.UbicacionMapper;
 import com.emprendeStore.application.service.UbicacionService;
-import com.emprendeStore.domain.model.ConfigPais;
 import com.emprendeStore.domain.repository.*;
 import com.emprendeStore.web.dto.response.PaisResponseDto;
 import com.emprendeStore.web.dto.response.UbicacionResponseDto;
@@ -16,7 +15,6 @@ import java.util.List;
 public class UbicacionServiceImpl implements UbicacionService {
     private final PaisRepository pr;
     private final UbicacionMapper um;
-    private final ConfigPaisRepository cpr;
     private final UbicacionNivel1Repository un1r;
     private final UbicacionNivel2Repository un2r;
     private final UbicacionNivel3Repository un3r;
@@ -24,11 +22,10 @@ public class UbicacionServiceImpl implements UbicacionService {
 
     @Override
     public List<PaisResponseDto> listarPaises() {
-        return pr.findAll()
+        return pr.findTodoConConfig()
                 .stream()
                 .map(pais -> {
-                    ConfigPais cp = cpr.findById(pais.getIdPais()).orElse(null);
-                    return um.toPaisDto(pais, cp);
+                    return um.toPaisDto(pais, pais.getConfigPais());
                 })
                 .toList();
     }

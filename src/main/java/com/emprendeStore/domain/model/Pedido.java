@@ -16,48 +16,48 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @Entity
-@Table(name = "PEDIDO", indexes = {
-        @Index(name = "IDX_PEDIDO_TRANSACCION", columnList = "ID_TRANSACCION", unique = true)
+@Table(name = "pedido", indexes = {
+        @Index(name = "idx_pedido_transaccion", columnList = "id_transaccion", unique = true)
 })
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PEDIDO", nullable = false)
+    @Column(name = "id_pedido", nullable = false)
     private Long idPedido;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USU", nullable = false)
+    @JoinColumn(name = "id_usu", nullable = false)
     private Usuario usuario;
 
-    @Column(name = "ID_TRANSACCION", nullable = false, length = 100, unique = true)
+    @Column(name = "id_transaccion", nullable = false, length = 100, unique = true)
     private String idTransaccion;
 
     @CreationTimestamp
-    @Column(name = "FECHA_PEDIDO", updatable = false)
+    @Column(name = "fecha_pedido", updatable = false)
     private LocalDateTime fechaPedido;
 
     @ColumnDefault("0.00")
-    @Column(name = "SUBTOTAL_GLOBAL", nullable = false, precision = 10, scale = 2)
+    @Column(name = "subtotal_global", nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotalGlobal;
 
     @ColumnDefault("0.00")
-    @Column(name = "COSTO_ENVIO_TOTAL", nullable = false, precision = 10, scale = 2)
+    @Column(name = "costo_envio_total", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoEnvioTotal;
 
     @ColumnDefault("0.00")
-    @Column(name = "TOTAL_PAGADO", nullable = false, precision = 10, scale = 2)
+    @Column(name = "total_pagado", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPagado;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "METODO_PAGO", nullable = false)
+    @Column(name = "metodo_pago", nullable = false)
     private MetodoPago metodoPago;
 
     @ColumnDefault("'PENDIENTE'")
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO_PEDIDO", nullable = false, length = 20)
+    @Column(name = "estado_pedido", nullable = false, length = 20)
     private EstadoVenta estadoPedido;
 
-    @Column(name = "DIRECCION_SNAPSHOT", length = 1000)
+    @Column(name = "direccion_snapshot", length = 1000)
     private String direccionSnapshot;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

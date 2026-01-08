@@ -28,30 +28,21 @@ public class DireccionServiceImpl implements DireccionService {
     @Override
     @Transactional
     public DireccionResponseDto saveDireccion(DireccionRequestDto dto) {
-        Usuario u = ur.findById(dto.getIdUsu()).orElseThrow(() -> new ErrorNegocio("Usuario no encontrado"));
-        Pais p = pr.findById(dto.getIdPais()).orElseThrow(() -> new ErrorNegocio("Pais no encontrado"));
-        
-        UbicacionNivel1 un1 = dto.getIdUbicacionNivel1() != null ? 
-                un1r.findById(dto.getIdUbicacionNivel1()).orElse(null) : null;
-        UbicacionNivel2 un2 = dto.getIdUbicacionNivel2() != null ? 
-                un2r.findById(dto.getIdUbicacionNivel2()).orElse(null) : null;
-        UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? 
-                un3r.findById(dto.getIdUbicacionNivel3()).orElse(null) : null;
-        List<Direccion> direccionesUsuario = dr.findByUsuarioIdUsu(u.getIdUsu());
-        if (direccionesUsuario.isEmpty()) {
-            dto.setEsPrincipal(true);
-        } else {
-            dto.setEsPrincipal(false);
-        }
-
+        Usuario u = ur.getReferenceById(dto.getIdUsu());
+        Pais p = pr.getReferenceById(dto.getIdPais());
+        UbicacionNivel1 un1 = dto.getIdUbicacionNivel1() != null ? un1r.getReferenceById(dto.getIdUbicacionNivel1()) : null;
+        UbicacionNivel2 un2 = dto.getIdUbicacionNivel2() != null ? un2r.getReferenceById(dto.getIdUbicacionNivel2()) : null;
+        UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? un3r.getReferenceById(dto.getIdUbicacionNivel3()) : null;
+        boolean esPrimera = dr.countByUsuarioIdUsu(dto.getIdUsu()) == 0;
+        dto.setEsPrincipal(esPrimera);
         Direccion d = dm.toEntity(dto, u, p, un1, un2, un3);
-        dr.save(d);
+        d = dr.save(d);
         return dm.toDto(d);
     }
 
     @Override
     public List<DireccionResponseDto> listarDirecciones(Long idUsuario) {
-        return dr.findByUsuarioIdUsu(idUsuario)
+        return dr.findAllConDetallesPorUsuario(idUsuario)
                 .stream()
                 .map(dm::toDto)
                 .toList();
@@ -59,9 +50,7 @@ public class DireccionServiceImpl implements DireccionService {
 
     @Override
     public DireccionResponseDto obtenerDireccionPrincipal(Long idUsuario) {
-        return dr.findByUsuarioIdUsuAndEsPrincipalTrue(idUsuario)
-                .stream()
-                .findFirst()
+        return dr.findDireccionPrincipalConDetalles(idUsuario)
                 .map(dm::toDto)
                 .orElse(null);
     }
@@ -70,11 +59,10 @@ public class DireccionServiceImpl implements DireccionService {
     @Transactional
     public DireccionResponseDto updateDireccion(Long idDireccion, DireccionRequestDto dto) {
         Direccion d = dr.findById(idDireccion).orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
-        Pais p = pr.findById(dto.getIdPais()).orElseThrow(() -> new ErrorNegocio("Pais no encontrado"));
-        UbicacionNivel1 un1 = dto.getIdUbicacionNivel1() != null ? un1r.findById(dto.getIdUbicacionNivel1()).orElse(null) : null;
-        UbicacionNivel2 un2 = dto.getIdUbicacionNivel2() != null ? un2r.findById(dto.getIdUbicacionNivel2()).orElse(null) : null;
-        UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? un3r.findById(dto.getIdUbicacionNivel3()).orElse(null) : null;
-        
+        Pais p = pr.getReferenceById(dto.getIdPais());
+        UbicacionNivel1 un1 = dto.getIdUbicacionNivel1() != null ? un1r.getReferenceById(dto.getIdUbicacionNivel1()) : null;
+        UbicacionNivel2 un2 = dto.getIdUbicacionNivel2() != null ? un2r.getReferenceById(dto.getIdUbicacionNivel2()) : null;
+        UbicacionNivel3 un3 = dto.getIdUbicacionNivel3() != null ? un3r.getReferenceById(dto.getIdUbicacionNivel3()) : null;
         // Preservamos el estado original de 'esPrincipal'
         boolean eraPrincipal = d.getEsPrincipal();
         
@@ -89,29 +77,20 @@ public class DireccionServiceImpl implements DireccionService {
 
     @Override
     public void deleteDireccion(Long idDireccion) {
-        Direccion d = dr.findById(idDireccion).orElseThrow(() -> new ErrorNegocio("Direccion no encontrada"));
-        dr.delete(d);
+        if (!dr.existsById(idDireccion)) {
+            throw new ErrorNegocio("Direccion no encontrada");
+        }
+        dr.deleteById(idDireccion);
     }
 
     @Override
     @Transactional
     public void establecerPrincipal(Long idDireccion) {
-        Direccion d = dr.findById(idDireccion)
-                .orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
-        
+        Direccion d = dr.findById(idDireccion).orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
         if (d.getEsPrincipal()) return;
-
-        desmarcarPrincipal(d.getUsuario().getIdUsu());
-
+        dr.desmarcarTodasLasDelUsuario(d.getUsuario().getIdUsu());
         d.setEsPrincipal(true);
         dr.save(d);
     }
 
-    private void desmarcarPrincipal(Long idUsuario) {
-        List<Direccion> principales = dr.findByUsuarioIdUsuAndEsPrincipalTrue(idUsuario);
-        for (Direccion dir : principales) {
-            dir.setEsPrincipal(false);
-            dr.save(dir);
-        }
-    }
 }

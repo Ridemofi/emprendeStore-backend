@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "CARRITO")
+@Table(name = "carrito")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Carrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CARRITO")
+    @Column(name = "id_carrito")
     private Long idCarrito;
     @OneToOne
-    @JoinColumn(name = "ID_USU", nullable = false, unique = true)
+    @JoinColumn(name = "id_usu", nullable = false, unique = true)
     private Usuario usuario;
     @CreationTimestamp
-    @Column(name = "FECHA_CREACION", updatable = false)
+    @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default

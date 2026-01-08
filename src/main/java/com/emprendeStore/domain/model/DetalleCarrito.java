@@ -6,8 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "DETALLE_CARRITO", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ID_CARRITO", "ID_PRO"})
+@Table(name = "detalle_carrito", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"id_carrito", "id_pro"})
 })
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
@@ -15,20 +15,20 @@ import java.math.BigDecimal;
 public class DetalleCarrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DETALLE_CARRITO")
+    @Column(name = "id_detalle_carrito")
     private Long idDetalleCarrito;
     @ManyToOne
-    @JoinColumn(name = "ID_CARRITO", nullable = false)
+    @JoinColumn(name = "id_carrito", nullable = false)
     private Carrito carrito;
     @ManyToOne
-    @JoinColumn(name = "ID_PRO", nullable = false)
+    @JoinColumn(name = "id_pro", nullable = false)
     private Producto producto;
-    @Column(name = "CANTIDAD", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
-    @Column(name = "PRECIO_UNIDAD", nullable = false, precision = 10, scale = 2)
+    @Column(name = "precio_unidad", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioUnitario;
 
-    @Column(name = "SELECCIONADO", nullable = false)
+    @Column(name = "seleccionado", nullable = false)
     @Builder.Default
     private Boolean seleccionado = true;
 }

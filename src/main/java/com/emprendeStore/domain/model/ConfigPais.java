@@ -4,48 +4,48 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "CONFIG_PAIS")
+@Table(name = "config_pais")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class ConfigPais {
     @Id
-    @Column(name = "ID_PAIS")
+    @Column(name = "id_pais")
     private Long idPais;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "ID_PAIS")
+    @JoinColumn(name = "id_pais")
     private Pais pais;
 
-    @Column(name = "USA_NIVEL_1")
+    @Column(name = "usa_nivel_1")
     @Builder.Default
     private Boolean usaNivel1 = true;
 
-    @Column(name = "USA_NIVEL_2")
+    @Column(name = "usa_nivel_2")
     @Builder.Default
     private Boolean usaNivel2 = true;
 
-    @Column(name = "USA_NIVEL_3")
+    @Column(name = "usa_nivel_3")
     @Builder.Default
     private Boolean usaNivel3 = true;
 
-    @Column(name = "LABEL_NIVEL_1", length = 50)
+    @Column(name = "label_nivel_1", length = 50)
     @Builder.Default
     private String labelNivel1 = "Estado/Región";
 
-    @Column(name = "LABEL_NIVEL_2", length = 50)
+    @Column(name = "label_nivel_2", length = 50)
     @Builder.Default
     private String labelNivel2 = "Ciudad/Provincia";
 
-    @Column(name = "LABEL_NIVEL_3", length = 50)
+    @Column(name = "label_nivel_3", length = 50)
     @Builder.Default
     private String labelNivel3 = "Distrito/Localidad";
 
-    @Column(name = "ZIP_REQUERIDO")
+    @Column(name = "zip_requerido")
     @Builder.Default
     private Boolean zipRequerido = false;
 
-    @Column(name = "FORMATO_TELEFONO", length = 50)
+    @Column(name = "formato_telefono", length = 50)
     private String formatoTelefono;
 }

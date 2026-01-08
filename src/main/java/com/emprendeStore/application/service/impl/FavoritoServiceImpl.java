@@ -31,16 +31,19 @@ public class FavoritoServiceImpl implements FavoritoService {
     @Override
     @Transactional
     public FavoritoResponseDto savefav(FavoritoRequestDto dto) {
-        Usuario u = ur.findById(dto.getIdUsu())
-                .orElseThrow(() -> new ErrorNegocio("Usuario no encontrado"));
-        Producto p = pr.findById(dto.getIdPro())
-                .orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
-        if (fr.findByUsuarioIdUsuAndProductoIdProducto(u.getIdUsu(), p.getIdProducto()).isPresent()) {
+        if (fr.existsByUsuarioIdUsuAndProductoIdProducto(dto.getIdUsu(), dto.getIdPro())){
             throw new ErrorNegocio("Ya existe en favoritos");
         }
-        Favoritos f=fm.toEntity(dto, u, p);
+        Usuario u = ur.getReferenceById(dto.getIdUsu());
+        Producto p = pr.getReferenceById(dto.getIdPro());
+        Favoritos f =fm.toEntity(u, p);
         fr.save(f);
-        return fm.toDto(f);
+        return FavoritoResponseDto.builder()
+                .idFav(f.getIdFav())
+                .idUsu(dto.getIdUsu())
+                .idPro(dto.getIdPro())
+                .fechaAgregado(f.getFechaAgregado() != null ? f.getFechaAgregado().toString() : java.time.LocalDate.now().toString())
+                .build();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class FavoritoServiceImpl implements FavoritoService {
     @Override
     @Transactional
     public void deletefav(Long idUsu, Long idPro) {
-        fr.deleteByUsuarioIdUsuAndProductoIdProducto(idUsu, idPro);
+        fr.deleteFavoritoDirecto(idUsu, idPro);
     }
 
 }

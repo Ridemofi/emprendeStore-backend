@@ -4,22 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "PAISES")
+@Table(name = "paises")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Pais {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PAIS")
+    @Column(name = "id_pais")
     private Long idPais;
 
-    @Column(name = "ISO_CODE", nullable = false, unique = true, length = 2)
+    @Column(name = "iso_code", nullable = false, unique = true, length = 2)
     private String isoCode;
 
-    @Column(name = "NOMBRE_PAIS", nullable = false, length = 100)
+    @Column(name = "nombre_pais", nullable = false, length = 100)
     private String nombrePais;
 
-    @Column(name = "CODIGO_TELEFONO", length = 10)
+    @Column(name = "codigo_telefono", length = 10)
     private String codigoTelefono;
+
+    @OneToOne(mappedBy = "pais", fetch = FetchType.LAZY)
+    private ConfigPais configPais;
 }

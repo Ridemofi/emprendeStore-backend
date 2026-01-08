@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "EMPRENDEDOR")
+@Table(name = "emprendedor")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,33 +18,33 @@ import java.util.List;
 public class Emprendedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_EMPRE")
+    @Column(name = "id_empre")
     private Long idempre;
 
-    @Column(name = "IMAGENEMPRE")
+    @Column(name = "imagenempre")
     private String imgempre;
 
-    @Column(name = "NOMBEMP", length = 40)
+    @Column(name = "nombemp", length = 40)
     private String nombreemp;
 
-    @Column(name = "CORREO", nullable = false, length = 40)
+    @Column(name = "correo", nullable = false, length = 40)
     private String correoemp;
 
-    @Column(name = "NRO_CEL", nullable = false, length = 11)
+    @Column(name = "nro_cel", nullable = false, length = 11)
     private String nrocellemp;
 
-    @Column(name = "PASSWORD", nullable = false, length = 100)
+    @Column(name = "password", nullable = false, length = 100)
     private String passwordempre;
 
-    @Column(name = "SALDO" , nullable = false)
+    @Column(name = "saldo" , nullable = false)
     private BigDecimal saldo;
 
-    @Column(name = "ROL", nullable = false, length = 20)
+    @Column(name = "rol", nullable = false, length = 20)
     @Builder.Default
     private String rol = "EMPRENDEDOR";
 
     @CreationTimestamp
-    @Column(name = "FECHA_REGISTRO", updatable = false)
+    @Column(name = "fecha_registro", updatable = false)
     private LocalDate fecharegistroemp;
 
     @OneToMany(mappedBy = "emprendedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

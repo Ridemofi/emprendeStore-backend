@@ -11,14 +11,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    @Query(value = "SELECT * FROM PRODUCTOS WHERE ESTADO = 'DISPONIBLE' ORDER BY FECHA_REGISTRO DESC, ID_PRO DESC LIMIT 8", nativeQuery = true)
-    List<Producto> findRecienLlegados();
-
-    @Query(value = "SELECT * FROM PRODUCTOS WHERE ESTADO = 'DISPONIBLE' AND LOWER(NOMBPRO) LIKE LOWER(CONCAT('%', :nombre, '%'))", nativeQuery = true)
-    List<Producto> buscarProducPorNombre(@Param("nombre") String nombre);
+    @Query("SELECT p FROM Producto p " +
+            "JOIN FETCH p.categoria " +
+            "LEFT JOIN FETCH p.emprendedor " +
+            "WHERE p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
+            "ORDER BY p.fechaRegistro DESC, p.idProducto DESC")
+    List<Producto> findRecienLlegados(Pageable pageable);
 
     // Consulta para la búsqueda pública (filtra por estado)
-    @Query("SELECT p FROM Producto p WHERE " +
+    @Query("SELECT p FROM Producto p " +
+            "JOIN FETCH p.categoria " +
+            "LEFT JOIN FETCH p.emprendedor " +
+            "WHERE " +
             "(p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible OR p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Bajo) AND " +
             "(:texto IS NULL OR p.nombreProd LIKE CONCAT('%', :texto, '%')) AND " +
             "(:idCategoria IS NULL OR p.categoria.idCategoria = :idCategoria) AND " +
@@ -30,7 +34,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     );
 
     // NUEVA CONSULTA: Para la gestión del emprendedor (NO filtra por estado)
-    @Query("SELECT p FROM Producto p WHERE " +
+    @Query("SELECT p FROM Producto p " +
+            "JOIN FETCH p.categoria " +
+            "WHERE " +
             "p.emprendedor.idempre = :idEmprendedor AND " +
             "(:texto IS NULL OR p.nombreProd LIKE CONCAT('%', :texto, '%'))")
     List<Producto> buscarProductParaGestion(
@@ -51,13 +57,15 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     long countByEmprendedorIdempre(Long idEmprendedor);
 
     @Query("SELECT p FROM Producto p " +
-           "WHERE p.categoria.idCategoria IN :catIds " +
-           "AND p.idProducto NOT IN :excludedIds " +
-           "AND p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
-           "ORDER BY FUNCTION('RAND')")
+            "JOIN FETCH p.categoria " +
+            "LEFT JOIN FETCH p.emprendedor " +
+            "WHERE p.categoria.idCategoria IN :catIds " +
+            "AND p.idProducto NOT IN :excludedIds " +
+            "AND p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
+            "ORDER BY FUNCTION('RAND')")
     List<Producto> findRecomendaciones(
-            @Param("catIds") List<Long> catIds, 
-            @Param("excludedIds") List<Long> excludedIds, 
+            @Param("catIds") List<Long> catIds,
+            @Param("excludedIds") List<Long> excludedIds,
             Pageable pageable
     );
 }

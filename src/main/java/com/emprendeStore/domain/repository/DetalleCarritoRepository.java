@@ -2,6 +2,7 @@ package com.emprendeStore.domain.repository;
 
 import com.emprendeStore.domain.model.DetalleCarrito;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -28,4 +29,16 @@ public interface DetalleCarritoRepository extends JpaRepository<DetalleCarrito, 
 
     @Query("SELECT d FROM DetalleCarrito d WHERE d.carrito.usuario.idUsu = :idUsuario AND d.seleccionado = true")
     List<DetalleCarrito> findDetallesSeleccionadosPorUsuario(@Param("idUsuario") Long idUsuario);
+
+    @Modifying // Indica que esto modifica datos, no solo lee
+    @Query("UPDATE DetalleCarrito d SET d.seleccionado = :seleccionado " +
+            "WHERE d.idDetalleCarrito = :idDetalle " +
+            "AND d.carrito.usuario.idUsu = :idUsuario")
+    int actualizarSeleccion(@Param("idUsuario") Long idUsuario,
+                            @Param("idDetalle") Long idDetalle,
+                            @Param("seleccionado") boolean seleccionado);
+
+    @Modifying
+    @Query("DELETE FROM DetalleCarrito d WHERE d.carrito.usuario.idUsu = :idUsu AND d.seleccionado = true")
+    void deleteSeleccionadosPorUsuario(@Param("idUsu") Long idUsu);
 }

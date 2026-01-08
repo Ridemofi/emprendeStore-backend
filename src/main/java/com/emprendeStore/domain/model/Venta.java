@@ -13,38 +13,38 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @Entity
-@Table(name = "VENTA")
+@Table(name = "venta")
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_VENTA", nullable = false)
+    @Column(name = "id_venta", nullable = false)
     private Long idVenta;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_PEDIDO", nullable = false)
+    @JoinColumn(name = "id_pedido", nullable = false)
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_EMPRE", nullable = false)
+    @JoinColumn(name = "id_empre", nullable = false)
     private Emprendedor emprendedor;
 
     @ColumnDefault("0.00")
-    @Column(name = "SUBTOTAL", nullable = false, precision = 10, scale = 2)
+    @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
 
     @ColumnDefault("0.00")
-    @Column(name = "TOTAL", nullable = false, precision = 10, scale = 2)
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
     @ColumnDefault("'PENDIENTE'")
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO_VENTA", nullable = false, length = 20)
+    @Column(name = "estado_venta", nullable = false, length = 20)
     private EstadoVenta estadoVenta;
 
-    @Column(name = "EMPRESA_ENVIO", length = 100)
+    @Column(name = "empresa_envio", length = 100)
     private String empresaEnvio;
 
-    @Column(name = "CODIGO_SEGUIMIENTO", length = 100)
+    @Column(name = "codigo_seguimiento", length = 100)
     private String codigoSeguimiento;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

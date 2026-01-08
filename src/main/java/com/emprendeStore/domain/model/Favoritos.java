@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "FAVORITOS", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ID_USU", "ID_PRO"})
+@Table(name = "favoritos", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"id_usu", "id_pro"})
 })
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
@@ -16,15 +16,18 @@ import java.time.LocalDate;
 public class Favoritos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_FAV")
+    @Column(name = "id_fav")
     private Long idFav;
-    @ManyToOne
-    @JoinColumn(name = "ID_USU", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usu", nullable = false)
     private Usuario usuario;
-    @ManyToOne
-    @JoinColumn(name = "ID_PRO", nullable = false)
+    /* Igual aquí. Si solo necesitas el ID del producto,
+       no traerá toda la info del producto a menos que la pidas.
+    */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pro", nullable = false)
     private Producto producto;
     @CreationTimestamp
-    @Column(name = "FECHA_AGREGADO", updatable = false)
+    @Column(name = "fecha_agregado", updatable = false)
     private LocalDate fechaAgregado;
 }
