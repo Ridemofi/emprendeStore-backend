@@ -83,15 +83,17 @@ public class CarritoServiceImpl implements CarritoService {
             return removerItem(idUsuario, idDetalleCarrito);
         }
 
-        DetalleCarrito detalle = dcr.findById(idDetalleCarrito)
-                .orElseThrow(() -> new ErrorNegocio("Ítem del carrito no encontrado"));
-
-        if (!detalle.getCarrito().getUsuario().getIdUsu().equals(idUsuario)) {
-            throw new ErrorNegocio("Acceso denegado. No puedes modificar ítems de otro usuario.");
+        // Optimización: Usar una query directa para verificar propiedad y actualizar, en lugar de findById + save
+        int updated = dcr.actualizarCantidad(idUsuario, idDetalleCarrito, nuevaCantidad);
+        if (updated == 0) {
+             // Si no actualizó nada, puede ser que no exista o no sea del usuario.
+             // Hacemos la comprobación lenta solo si falla la rápida.
+             if (!dcr.existsById(idDetalleCarrito)) {
+                 throw new ErrorNegocio("Ítem del carrito no encontrado");
+             }
+             // Si existe pero no actualizó, es porque no pertenece al usuario (según la query)
+             throw new ErrorNegocio("Acceso denegado. No puedes modificar ítems de otro usuario.");
         }
-
-        detalle.setCantidad(nuevaCantidad);
-        dcr.save(detalle);
 
         return getCarrito(idUsuario);
     }
@@ -99,14 +101,19 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     @Transactional
     public CarritoResponseDto removerItem(Long idUsuario, Long idDetalleCarrito) {
-        DetalleCarrito detalle = dcr.findById(idDetalleCarrito)
-                .orElseThrow(() -> new ErrorNegocio("Ítem del carrito no encontrado"));
-
-        if (!detalle.getCarrito().getUsuario().getIdUsu().equals(idUsuario)) {
-            throw new ErrorNegocio("Acceso denegado");
+        // Optimización: Borrado directo con validación de usuario en la misma query
+        int deleted = dcr.borrarItemDeUsuario(idUsuario, idDetalleCarrito);
+        
+        if (deleted == 0) {
+             if (!dcr.existsById(idDetalleCarrito)) {
+                 throw new ErrorNegocio("Ítem del carrito no encontrado");
+             }
+             throw new ErrorNegocio("Acceso denegado");
         }
-        detalle.getCarrito().getDetalles().remove(detalle);
-        dcr.delete(detalle);
+        
+        // Refrescamos el carrito para devolver el estado actual
+        // Nota: Como borramos directamente en BD, el objeto Carrito en memoria (si lo tuviéramos) estaría desactualizado.
+        // Al llamar a getCarrito se hace una nueva select fresca.
         return getCarrito(idUsuario);
     }
 

@@ -2,9 +2,13 @@ spring:
   application:
     name: emprendeStore
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl-mode=REQUIRED
-    username: ridemofi
-    password: ${DB_PASSWORD}
+    # probar en local
+    url: jdbc:mysql://localhost:3307/DB_ES
+    username: root
+    password: mysql
+    #url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl-mode=REQUIRED
+    #username: ridemofi
+    #password: ${DB_PASSWORD}
   jpa:
     show-sql: true
     hibernate:

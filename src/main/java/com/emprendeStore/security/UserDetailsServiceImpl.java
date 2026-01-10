@@ -4,6 +4,7 @@ import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.domain.repository.EmprendedorRepository;
 import com.emprendeStore.domain.repository.UsuarioRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,17 +31,36 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Emprendedor> emprendedorOpt = emprendedorRepository.findByCorreoemp(correo);
         if (emprendedorOpt.isPresent()) {
             Emprendedor emp = emprendedorOpt.get();
-            return new User(emp.getCorreoemp(), emp.getPasswordempre(), Collections.emptyList());
+            // Asignamos la autoridad (rol) basada en el campo rol de la entidad
+            return new User(emp.getCorreoemp(), emp.getPasswordempre(), 
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + emp.getRol())));
         }
 
         // 2. Intentar buscar como Usuario (solo por correo)
         Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
         if (usuarioOpt.isPresent()) {
             Usuario usu = usuarioOpt.get();
-            return new User(usu.getCorreo(), usu.getPassword(), Collections.emptyList());
+            // Asignamos la autoridad (rol) basada en el campo rol de la entidad
+            return new User(usu.getCorreo(), usu.getPassword(), 
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usu.getRol())));
         }
 
         // 3. Si no se encuentra en ninguno
         throw new UsernameNotFoundException("Usuario o Emprendedor no encontrado con el correo: " + correo);
+    }
+    
+    // Métodos optimizados para buscar directamente si ya sabemos el rol
+    public UserDetails loadUserByUsernameAndRole(String correo, String role) {
+        if ("ROLE_EMPRENDEDOR".equals(role) || "EMPRENDEDOR".equals(role)) {
+             Emprendedor emp = emprendedorRepository.findByCorreoemp(correo)
+                     .orElseThrow(() -> new UsernameNotFoundException("Emprendedor no encontrado: " + correo));
+             return new User(emp.getCorreoemp(), emp.getPasswordempre(), 
+                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + emp.getRol())));
+        } else {
+             Usuario usu = usuarioRepository.findByCorreo(correo)
+                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + correo));
+             return new User(usu.getCorreo(), usu.getPassword(), 
+                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usu.getRol())));
+        }
     }
 }

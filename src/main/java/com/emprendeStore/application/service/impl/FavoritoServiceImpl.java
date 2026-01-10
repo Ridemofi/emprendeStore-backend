@@ -38,12 +38,7 @@ public class FavoritoServiceImpl implements FavoritoService {
         Producto p = pr.getReferenceById(dto.getIdPro());
         Favoritos f =fm.toEntity(u, p);
         fr.save(f);
-        return FavoritoResponseDto.builder()
-                .idFav(f.getIdFav())
-                .idUsu(dto.getIdUsu())
-                .idPro(dto.getIdPro())
-                .fechaAgregado(f.getFechaAgregado() != null ? f.getFechaAgregado().toString() : java.time.LocalDate.now().toString())
-                .build();
+        return fm.toDto(f);
     }
 
     @Override

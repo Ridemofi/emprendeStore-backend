@@ -17,6 +17,7 @@ public class CategoriaMapperImpl implements CategoriaMapper {
         return Categoria.builder()
                 .imgCat(dto.getImgcat())
                 .nombreCat(dto.getNombreCat())
+                .descripcion(dto.getDescripcion())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class CategoriaMapperImpl implements CategoriaMapper {
                 .imgcat(c.getImgCat())
                 .idCategoria(c.getIdCategoria())
                 .nombreCat(c.getNombreCat())
+                .descripcion(c.getDescripcion())
                 .build();
     }
 }

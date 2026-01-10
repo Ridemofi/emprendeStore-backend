@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Long> {
-    Optional<Pais> findByIsoCode(String isoCode);
     @Query("SELECT p FROM Pais p LEFT JOIN FETCH p.configPais")
     List<Pais> findTodoConConfig();
 }

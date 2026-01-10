@@ -27,7 +27,10 @@ public interface DetalleCarritoRepository extends JpaRepository<DetalleCarrito, 
             "AND d.seleccionado = true")
     BigDecimal calcularCostoEnvioPorUsuario(@Param("idUsuario") Long idUsuario);
 
-    @Query("SELECT d FROM DetalleCarrito d WHERE d.carrito.usuario.idUsu = :idUsuario AND d.seleccionado = true")
+    @Query("SELECT d FROM DetalleCarrito d " +
+            "JOIN FETCH d.producto p " +
+            "JOIN FETCH p.emprendedor " +
+            "WHERE d.carrito.usuario.idUsu = :idUsuario AND d.seleccionado = true")
     List<DetalleCarrito> findDetallesSeleccionadosPorUsuario(@Param("idUsuario") Long idUsuario);
 
     @Modifying // Indica que esto modifica datos, no solo lee
@@ -41,4 +44,19 @@ public interface DetalleCarritoRepository extends JpaRepository<DetalleCarrito, 
     @Modifying
     @Query("DELETE FROM DetalleCarrito d WHERE d.carrito.usuario.idUsu = :idUsu AND d.seleccionado = true")
     void deleteSeleccionadosPorUsuario(@Param("idUsu") Long idUsu);
+
+    @Modifying
+    @Query("UPDATE DetalleCarrito d SET d.cantidad = :cantidad " +
+            "WHERE d.idDetalleCarrito = :idDetalle " +
+            "AND d.carrito.usuario.idUsu = :idUsuario")
+    int actualizarCantidad(@Param("idUsuario") Long idUsuario,
+                           @Param("idDetalle") Long idDetalle,
+                           @Param("cantidad") int cantidad);
+
+    @Modifying
+    @Query("DELETE FROM DetalleCarrito d " +
+            "WHERE d.idDetalleCarrito = :idDetalle " +
+            "AND d.carrito.usuario.idUsu = :idUsuario")
+    int borrarItemDeUsuario(@Param("idUsuario") Long idUsuario,
+                            @Param("idDetalle") Long idDetalle);
 }

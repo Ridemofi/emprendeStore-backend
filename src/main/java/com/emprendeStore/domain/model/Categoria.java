@@ -15,9 +15,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cat")
     private Long idCategoria;
-    @Column(name = "imgcat", columnDefinition = "LONGBLOB")
-    @Lob
-    private byte[] imgCat;
+    @Column(name = "imgcat")
+    private String imgCat;
     @Column(name = "nombre_cat", nullable = false, unique = true, length = 100)
     private String nombreCat;
     @Column(name = "descripcion", columnDefinition = "TEXT")

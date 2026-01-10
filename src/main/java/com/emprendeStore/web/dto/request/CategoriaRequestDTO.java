@@ -6,8 +6,7 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class CategoriaRequestDTO {
-    private byte[] imgcat;
+    private String imgcat;
     private String nombreCat;
-
-
+    private String descripcion;
 }

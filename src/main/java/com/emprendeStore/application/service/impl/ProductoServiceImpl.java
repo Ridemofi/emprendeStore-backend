@@ -72,7 +72,7 @@ public class ProductoServiceImpl implements ProductoService {
         Producto p = pr.findById(id).orElseThrow(() -> new ErrorNegocio("Producto no encontrado"));
         pm.updateEntity(dto, p);
         if (dto.getIdCategoria() != null) {
-            Categoria c = cr.findById(dto.getIdCategoria()).orElseThrow(() -> new ErrorNegocio("Categoría no encontrada"));
+            Categoria c = cr.getReferenceById(dto.getIdCategoria());
             p.setCategoria(c);
         }
         if (StringUtils.hasText(dto.getEstado())) {

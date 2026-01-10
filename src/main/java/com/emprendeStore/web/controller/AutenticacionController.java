@@ -33,15 +33,13 @@ public class AutenticacionController {
 
     @PostMapping("/loginempre")
     public ResponseEntity<AuthEmprendedorResponseDto> loginEmpre(@Valid @RequestBody LoginEmprendedorRequestDto loginDto) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getCorreo(), loginDto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(authentication);
         Emprendedor empre = emprendedorRepository.findByCorreoemp(loginDto.getCorreo()).orElseThrow(() -> new RuntimeException("Emprendedor no encontrado"));
-        AuthEmprendedorResponseDto response = am.toAuthEmprendedorDto(empre, token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(am.toAuthEmprendedorDto(empre, token));
     }
 
     @PostMapping("/loginusu")
@@ -53,7 +51,6 @@ public class AutenticacionController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(authentication);
         Usuario usu = usuarioRepository.findByCorreo(loginDto.getCorreo()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        AuthUsuarioResponseDto response = am.toAuthUsuarioDto(usu, token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(am.toAuthUsuarioDto(usu, token));
     }
 }

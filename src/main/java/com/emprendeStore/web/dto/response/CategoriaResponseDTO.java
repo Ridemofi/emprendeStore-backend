@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CategoriaResponseDTO {
-    private byte[] imgcat;
+    private String imgcat;
     private Long idCategoria;
     private String nombreCat;
+    private String descripcion;
 }

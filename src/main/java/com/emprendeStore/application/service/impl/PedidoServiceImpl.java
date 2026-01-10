@@ -38,8 +38,8 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public PedidoResponseDto crearPedido(PedidoRequestDto request) {
-        Usuario u = ur.findById(request.getIdUsu()).orElseThrow(() -> new ErrorNegocio("Usuario no encontrado"));
-        Direccion dire = dr.findById(request.getIdDireccion()).orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
+        Usuario u = ur.getReferenceById(request.getIdUsu());
+        Direccion dire = dr.findByIdWithDetalles(request.getIdDireccion()).orElseThrow(() -> new ErrorNegocio("Dirección no encontrada"));
         List<DetalleCarrito> detallesSeleccionados = dcr.findDetallesSeleccionadosPorUsuario(u.getIdUsu());
         if (detallesSeleccionados.isEmpty()) {
             throw new ErrorNegocio("No hay productos seleccionados para comprar");

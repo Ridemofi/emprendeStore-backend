@@ -13,6 +13,7 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
     @Query("SELECT c FROM Carrito c " +
             "LEFT JOIN FETCH c.detalles d " +
             "LEFT JOIN FETCH d.producto p " +
+            "LEFT JOIN FETCH p.emprendedor " +
             "WHERE c.usuario.idUsu = :idUsu")
     Optional<Carrito> findByUsuarioWithDetalles(@Param("idUsu") Long idUsu);
 }

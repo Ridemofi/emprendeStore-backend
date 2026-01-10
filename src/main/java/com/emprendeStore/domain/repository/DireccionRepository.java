@@ -35,4 +35,12 @@ public interface DireccionRepository extends JpaRepository<Direccion, Long> {
             "WHERE d.usuario.idUsu = :idUsu AND d.esPrincipal = true")
     Optional<Direccion> findDireccionPrincipalConDetalles(@Param("idUsu") Long idUsu);
 
+    @Query("SELECT d FROM Direccion d " +
+            "JOIN FETCH d.pais " +
+            "LEFT JOIN FETCH d.ubicacionNivel1 " +
+            "LEFT JOIN FETCH d.ubicacionNivel2 " +
+            "LEFT JOIN FETCH d.ubicacionNivel3 " +
+            "WHERE d.idDir = :idDir")
+    Optional<Direccion> findByIdWithDetalles(@Param("idDir") Long idDir);
+
 }
