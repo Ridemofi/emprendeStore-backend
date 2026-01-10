@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/direccion")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class DireccionController {
     private final DireccionService ds;

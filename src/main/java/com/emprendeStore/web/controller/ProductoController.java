@@ -18,7 +18,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class ProductoController {
     private final ProductoService ps;

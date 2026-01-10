@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/pedido")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class PedidoController {
 
-    private final PedidoService ventaService;
+    private final PedidoService ps;
 
     @PostMapping
     public ResponseEntity<PedidoResponseDto> crearVenta(@Valid @RequestBody PedidoRequestDto request) {
-        PedidoResponseDto response = ventaService.crearPedido(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ps.crearPedido(request));
     }
 
 }

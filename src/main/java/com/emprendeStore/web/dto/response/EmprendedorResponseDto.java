@@ -13,6 +13,7 @@ public class EmprendedorResponseDto {
     private Long idemp;
     private String imgemp;
     private String nombep;
+    private String descripemp;
     private String correo;
     private String nrocell;
     private LocalDate fechaingreso;

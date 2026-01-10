@@ -15,8 +15,9 @@ public class EmprendedorMapperImpl implements EmprendedorMapper {
     @Override
     public Emprendedor toEntity(RegisterEmprendedorRequestDto dto) {
         return Emprendedor.builder()
-                .imgempre(dto.getImgemp())
-                .nombreemp(dto.getNombep())
+                .imgempre(dto.getImgEmp())
+                .nombreemp(dto.getNombEmp())
+                .descripempre(dto.getDescripEmp())
                 .correoemp(dto.getCorreo())
                 .nrocellemp(dto.getNrocell())
                 .passwordempre(dto.getPassword())
@@ -29,6 +30,7 @@ public class EmprendedorMapperImpl implements EmprendedorMapper {
                 .idemp(e.getIdempre())
                 .imgemp(e.getImgempre())
                 .nombep(e.getNombreemp())
+                .descripemp(e.getDescripempre())
                 .correo(e.getCorreoemp())
                 .nrocell(e.getNrocellemp())
                 .saldo(e.getSaldo())
@@ -46,6 +48,9 @@ public class EmprendedorMapperImpl implements EmprendedorMapper {
         }
         if (dto.getTelefono() != null) {
             e.setNrocellemp(dto.getTelefono());
+        }
+        if(dto.getDescripEmpre() != null){
+            e.setDescripempre(dto.getDescripEmpre());
         }
     }
 

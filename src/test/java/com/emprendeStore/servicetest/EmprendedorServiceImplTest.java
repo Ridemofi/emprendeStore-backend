@@ -92,7 +92,7 @@ public class EmprendedorServiceImplTest {
     void registrarEmprendedor() {
         // DTO de entrada
         RegisterEmprendedorRequestDto request = RegisterEmprendedorRequestDto.builder()
-                .nombep("Juan")
+                .nombEmp("Juan")
                 .correo("juan@test.com")
                 .nrocell("999999999")
                 .password("1234")

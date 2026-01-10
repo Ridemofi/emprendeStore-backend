@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/favorito")
-@CrossOrigin("*")
 public class FavoritoController {
     private final FavoritoService fs;
 

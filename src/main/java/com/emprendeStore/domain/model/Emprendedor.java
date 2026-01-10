@@ -27,6 +27,9 @@ public class Emprendedor {
     @Column(name = "nombemp", length = 40)
     private String nombreemp;
 
+    @Column(name = "descripempre", columnDefinition = "TEXT")
+    private String descripempre;
+
     @Column(name = "correo", nullable = false, length = 40)
     private String correoemp;
 

@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/emprendedor")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class EmprendedorController {
     private final EmprendedorService es;
