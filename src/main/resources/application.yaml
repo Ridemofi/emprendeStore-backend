@@ -3,7 +3,7 @@ spring:
     name: emprendeStore
   datasource:
     # probar en local
-    url: jdbc:mysql://localhost:3307/DB_ES
+    url: jdbc:mysql://localhost:3306/DB_ES
     username: root
     password: mysql
     #url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl-mode=REQUIRED
