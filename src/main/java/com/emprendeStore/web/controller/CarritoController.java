@@ -2,13 +2,11 @@ package com.emprendeStore.web.controller;
 
 import com.emprendeStore.application.service.CarritoService;
 import com.emprendeStore.web.dto.response.CarritoResponseDto;
-import com.emprendeStore.web.dto.response.ProductoResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/carrito")
@@ -54,9 +52,17 @@ public class CarritoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{idUsuario}/seleccion-todos")
+    public ResponseEntity<Void> seleccionarTodosLosItems(@PathVariable Long idUsuario,
+                                                         @RequestParam boolean seleccionado) {
+        cs.seleccionarTodosLosItems(idUsuario, seleccionado);
+        return ResponseEntity.noContent().build();
+
+    }
+
     @GetMapping("/{idUsuario}/costo-envio")
     public ResponseEntity<BigDecimal> obtenerCostoEnvio(@PathVariable Long idUsuario) {
-        return ResponseEntity.ok(cs.calcularCostoEnvio(idUsuario));
+        return ResponseEntity.ok(cs.calcularCostoEnvioXUsuario(idUsuario));
     }
 
     @GetMapping("/{idUsuario}/productos-seleccionados")

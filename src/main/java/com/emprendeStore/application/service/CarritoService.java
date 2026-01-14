@@ -12,7 +12,8 @@ public interface CarritoService {
     CarritoResponseDto removerItem(Long idUsuario, Long idDetalleCarrito);
     BigDecimal getSubtotalCarritoXUsuario(Long idUsuario);
     void updateSeleccionItem(Long idUsuario, Long idDetalleCarrito, boolean seleccionado);
-    BigDecimal calcularCostoEnvio(Long idUsuario);
+    void seleccionarTodosLosItems(Long idUsuario, boolean seleccionado);
+    BigDecimal calcularCostoEnvioXUsuario(Long idUsuario);
     void limpiarCarrito(Long idUsuario);
     CarritoResponseDto getProductosSeleccionados(Long idUsuario);
 }

@@ -33,6 +33,12 @@ public interface DetalleCarritoRepository extends JpaRepository<DetalleCarrito, 
             "WHERE d.carrito.usuario.idUsu = :idUsuario AND d.seleccionado = true")
     List<DetalleCarrito> findDetallesSeleccionadosPorUsuario(@Param("idUsuario") Long idUsuario);
 
+    @Modifying
+    @Query("UPDATE DetalleCarrito d SET d.seleccionado = :seleccionado " +
+            "WHERE d.carrito.usuario.idUsu = :idUsuario")
+    int actualizarSeleccionTodos(@Param("idUsuario") Long idUsuario,
+                                 @Param("seleccionado") boolean seleccionado);
+
     @Modifying // Indica que esto modifica datos, no solo lee
     @Query("UPDATE DetalleCarrito d SET d.seleccionado = :seleccionado " +
             "WHERE d.idDetalleCarrito = :idDetalle " +

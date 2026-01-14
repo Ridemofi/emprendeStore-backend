@@ -2,7 +2,6 @@ package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.CarritoMapper;
-import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.CarritoService;
 import com.emprendeStore.domain.model.Carrito;
 import com.emprendeStore.domain.model.DetalleCarrito;
@@ -30,12 +29,10 @@ public class CarritoServiceImpl implements CarritoService {
     private final CarritoMapper cm;
     private final UsuarioRepository ur;
     private final ProductoRepository pr;
-    private final ProductorMapper pm;
 
     private Carrito obtenerOCrearCarrito(Long idUsuario) {
         return cr.findByUsuarioWithDetalles(idUsuario)
                 .orElseGet(() -> {
-                    //getReferenceById para no gastar recursos trayendo datos del usuario
                     Usuario usuario = ur.getReferenceById(idUsuario);
                     Carrito nuevoCarrito = new Carrito();
                     nuevoCarrito.setUsuario(usuario);
@@ -130,7 +127,13 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public BigDecimal calcularCostoEnvio(Long idUsuario) {
+    @Transactional
+    public void seleccionarTodosLosItems(Long idUsuario, boolean seleccionado) {
+        dcr.actualizarSeleccionTodos(idUsuario, seleccionado);
+    }
+
+    @Override
+    public BigDecimal calcularCostoEnvioXUsuario(Long idUsuario) {
         return dcr.calcularCostoEnvioPorUsuario(idUsuario);
     }
 

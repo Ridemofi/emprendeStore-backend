@@ -7,12 +7,14 @@ import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.request.PedidoRequestDto;
 import com.emprendeStore.web.dto.response.PedidoResponseDto;
 import com.emprendeStore.web.dto.response.VentaResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class PedidoMapperImpl implements PedidoMapper {
 
     @Override

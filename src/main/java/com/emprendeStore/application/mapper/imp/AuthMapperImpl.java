@@ -5,10 +5,12 @@ import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.response.AuthEmprendedorResponseDto;
 import com.emprendeStore.web.dto.response.AuthUsuarioResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class AuthMapperImpl implements AuthMapper {
 
     @Override
