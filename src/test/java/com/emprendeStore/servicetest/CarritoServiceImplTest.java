@@ -54,7 +54,7 @@ public class CarritoServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        carritoServiceImpl = new CarritoServiceImpl(detalleCarritoRepo, carritoRepo, carritoMapper, usuarioRepo, productoRepo, productoMapper);
+        carritoServiceImpl = new CarritoServiceImpl(detalleCarritoRepo, carritoRepo, carritoMapper, usuarioRepo, productoRepo);
     }
 
     @AfterEach

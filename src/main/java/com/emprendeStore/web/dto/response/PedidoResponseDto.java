@@ -1,6 +1,6 @@
 package com.emprendeStore.web.dto.response;
 
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.Estados.EstadoPedido;
 import com.emprendeStore.domain.Estados.MetodoPago;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class PedidoResponseDto {
     private BigDecimal costoEnvioTotal;
     private BigDecimal totalPagado;
     private MetodoPago metodoPago;
-    private EstadoVenta estadoPedido;
+    private EstadoPedido estadoPedido;
     private LocalDateTime fechaPedido;
     private String direccionEnvio;
     private List<VentaResponseDto> ventas;

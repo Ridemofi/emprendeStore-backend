@@ -81,6 +81,14 @@ public class PedidoServiceImpl implements PedidoService {
         return pm.toDto(pe, ventasDto);
     }
 
+    @Override
+    public List<PedidoResponseDto> listarPedidoXidUsuario(Long idUsuario) {
+        return peRepo.findAllByUsuario(idUsuario)
+                .stream()
+                .map(pm::toDtosimple)
+                .toList();
+    }
+
     private String generarCodigoPedido() {
         String caracteres = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         int longitud = 5;

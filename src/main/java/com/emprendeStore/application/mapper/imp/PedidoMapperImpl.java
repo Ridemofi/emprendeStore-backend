@@ -1,7 +1,7 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.PedidoMapper;
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.Estados.EstadoPedido;
 import com.emprendeStore.domain.model.Pedido;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.request.PedidoRequestDto;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -23,7 +24,7 @@ public class PedidoMapperImpl implements PedidoMapper {
                 .usuario(u)
                 .idTransaccion(idTransaccion)
                 .metodoPago(request.getMetodoPago())
-                .estadoPedido(EstadoVenta.PENDIENTE)
+                .estadoPedido(EstadoPedido.PENDIENTE)
                 .direccionSnapshot(direccionSnapshot)
                 .costoEnvioTotal(costoEnvio)
                 .subtotalGlobal(BigDecimal.ZERO)
@@ -46,5 +47,11 @@ public class PedidoMapperImpl implements PedidoMapper {
                 .direccionEnvio(pedido.getDireccionSnapshot())
                 .ventas(ventas)
                 .build();
+    }
+
+    @Override
+    public PedidoResponseDto toDtosimple(Pedido pedido) {
+        // Reutilizamos la lógica pasando una lista vacía de ventas
+        return toDto(pedido, Collections.emptyList());
     }
 }

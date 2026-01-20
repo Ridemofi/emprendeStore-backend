@@ -11,5 +11,8 @@ import java.util.List;
 
 public interface PedidoMapper {
     Pedido toEntity(PedidoRequestDto request, Usuario u, String idTransaccion, BigDecimal costoEnvio, String direccionSnapshot);
+    // completo con ventas detalladas
     PedidoResponseDto toDto(Pedido pedido, List<VentaResponseDto> ventas);
+    // simple para listados (resumen)
+    PedidoResponseDto toDtosimple(Pedido pedido);
 }

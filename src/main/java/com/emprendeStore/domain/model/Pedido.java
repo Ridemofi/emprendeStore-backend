@@ -1,6 +1,6 @@
 package com.emprendeStore.domain.model;
 
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.Estados.EstadoPedido;
 import com.emprendeStore.domain.Estados.MetodoPago;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,7 +55,7 @@ public class Pedido {
     @ColumnDefault("'PENDIENTE'")
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_pedido", nullable = false, length = 20)
-    private EstadoVenta estadoPedido;
+    private EstadoPedido estadoPedido;
 
     @Column(name = "direccion_snapshot", length = 1000)
     private String direccionSnapshot;

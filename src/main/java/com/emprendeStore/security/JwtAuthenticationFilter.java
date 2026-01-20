@@ -28,13 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 🔹 Ignorar rutas públicas de login/registro
-        String path = request.getRequestURI();
-        if (path.startsWith("/api/auth/")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         // 🔹 Validar token JWT normalmente para otras rutas
         String token = getJwtFromRequest(request);
         if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
