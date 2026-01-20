@@ -21,18 +21,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
   mail:
-    host: smtp.resend.com      # Cambiado a Resend
-    port: 587                  # Puerto estándar para TLS
-    username: resend           # Siempre es "resend"
-    password: ${RESEND_API_KEY} #API Key va aquí (en variable de entorno)
-    from: onboarding@ridemofi.me # Correo dominio verificado
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+    password: ${RESEND_API_KEY}  # Aquí lee la API Key
+    from: onboarding@ridemofi.me # Tu correo verificado
+
 jwt:
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
   expiration: 86400000

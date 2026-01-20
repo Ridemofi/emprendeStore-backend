@@ -1,39 +1,45 @@
 package com.emprendeStore.application.service.impl;
 
 import com.emprendeStore.application.service.EmailService;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender mailSender;
-    //viene de application.yaml
-    @Value("${spring.mail.from}")
+    // Ya no inyectamos JavaMailSender
+
+    // Instanciamos RestTemplate manualmente para evitar conflictos de configuración
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${spring.mail.password}") // Lee la API Key del yaml
+    private String resendApiKey;
+
+    @Value("${spring.mail.from}") // Lee el correo del yaml
     private String fromEmail;
 
     @Async
     @Override
     public void enviarCorreoBienvenida(String destinatario, String nombreUsuario) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            String url = "https://api.resend.com/emails";
 
-            helper.setFrom(fromEmail, "EmprendeStore");
-            helper.setTo(destinatario);
-            helper.setSubject("🎁 ¡Bienvenido a EmprendeStore!");
+            // 1. Configurar Headers (Autorización y Tipo de contenido)
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", "Bearer " + resendApiKey);
 
-            // Cabeceras Anti-Spam básicas
-            message.addHeader("List-Unsubscribe", "<mailto:unsubscribe@ridemofi.me>");
-            message.addHeader("Precedence", "bulk");
-
-            // Contenido HTML simplificado sin enlaces externos
+            // 2. Preparar el HTML (Tu diseño original)
             String htmlContent = """
                 <!DOCTYPE html>
                 <html>
@@ -70,24 +76,24 @@ public class EmailServiceImpl implements EmailService {
                 </html>
                 """.formatted(nombreUsuario);
 
-            String plainText = """
-                ¡Hola, %s! 👋
+            // 3. Crear el Cuerpo del JSON (Mapa de objetos)
+            Map<String, Object> body = new HashMap<>();
+            body.put("from", "EmprendeStore <" + fromEmail + ">");
+            body.put("to", destinatario);
+            body.put("subject", "🎁 ¡Bienvenido a EmprendeStore!");
+            body.put("html", htmlContent);
 
-                ¡Ya eres parte de la familia! Prepárate para descubrir millones de productos a precios increíbles.
-                Desde tecnología hasta moda, tenemos todo lo que buscas.
+            // 4. Empaquetar Petición y Enviar
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-                🚀 Envíos Rápidos | 🛡️ Compra Segura | 🏷️ Mejores Precios
+            // Enviamos el POST a Resend
+            restTemplate.postForEntity(url, request, String.class);
 
-                © 2024 EmprendeStore Inc.
-                """.formatted(nombreUsuario);
+            System.out.println("✅ Correo enviado vía HTTP API a: " + destinatario);
 
-            // Enviar ambas versiones (Texto y HTML)
-            helper.setText(plainText, htmlContent);
-
-            mailSender.send(message);
-            System.err.println("Correo Enviado");
         } catch (Exception e) {
-            System.err.println("Error al enviar el correo de bienvenida: " + e.getMessage());
+            System.err.println("❌ Error crítico enviando correo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
