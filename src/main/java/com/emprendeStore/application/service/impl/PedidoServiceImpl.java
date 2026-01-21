@@ -31,7 +31,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final DireccionRepository dr;
     private final PedidoRepository peRepo;
     private final CarritoService cs;
-    private final PedidoMapper pm;
+    private final PedidoMapper pemp;
     private final VentaService vs;
     private final VentaMapper vm;
 
@@ -45,13 +45,11 @@ public class PedidoServiceImpl implements PedidoService {
             throw new ErrorNegocio("No hay productos seleccionados para comprar");
         }
         BigDecimal costoEnvio = dcr.calcularCostoEnvioPorUsuario(u.getIdUsu());
-
         String idTransaccion = generarCodigoPedido();
         
-        Pedido pe = pm.toEntity(request, u, idTransaccion, costoEnvio, crearSnapshotDireccion(dire));
+        Pedido pe = pemp.toEntity(request, u, idTransaccion, costoEnvio, crearSnapshotDireccion(dire));
         //guardar para conseguir el id
         pe = peRepo.save(pe);
-
         Map<Emprendedor, List<DetalleCarrito>> itemsPorEmprendedor = detallesSeleccionados.stream()
                 .collect(Collectors.groupingBy(dC -> dC.getProducto().getEmprendedor()));
 
@@ -61,10 +59,8 @@ public class PedidoServiceImpl implements PedidoService {
         for (Map.Entry<Emprendedor, List<DetalleCarrito>> entry : itemsPorEmprendedor.entrySet()) {
             Emprendedor empre = entry.getKey();
             List<DetalleCarrito> items = entry.getValue();
-
             Venta v = vs.generarVenta(pe, empre, items);
             ventasGeneradas.add(v);
-            
             subtotalGlobalAcumulado = subtotalGlobalAcumulado.add(v.getSubtotal());
         }
 
@@ -78,14 +74,14 @@ public class PedidoServiceImpl implements PedidoService {
                 .map(vm::toDto)
                 .toList();
 
-        return pm.toDto(pe, ventasDto);
+        return pemp.toDto(pe, ventasDto);
     }
 
     @Override
     public List<PedidoResponseDto> listarPedidoXidUsuario(Long idUsuario) {
         return peRepo.findAllByUsuario(idUsuario)
                 .stream()
-                .map(pm::toDtosimple)
+                .map(pemp::toDtosimple)
                 .toList();
     }
 

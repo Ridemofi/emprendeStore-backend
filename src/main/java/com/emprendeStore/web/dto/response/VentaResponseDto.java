@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class VentaResponseDto {
     private Long idVenta;
     private String idTransaccion;
+    private String nombreCliente;
     private BigDecimal total;
     private MetodoPago metodoPago;
     private EstadoVenta estadoVenta;

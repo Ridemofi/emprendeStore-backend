@@ -7,6 +7,7 @@ import com.emprendeStore.domain.Estados.EstadoVenta;
 import com.emprendeStore.domain.model.*;
 import com.emprendeStore.domain.repository.EmprendedorRepository;
 import com.emprendeStore.domain.repository.VentaRepository;
+import com.emprendeStore.web.dto.response.VentaResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,13 @@ public class VentaServiceImpl implements VentaService {
         er.save(emprendedor);
 
         return vr.save(v);
+    }
+
+    @Override
+    public List<VentaResponseDto> listarVentasxIdEmprendedor(Long idEmprendedor) {
+        return vr.findAllByEmprendedor(idEmprendedor)
+                .stream()
+                .map(vm::toDto)
+                .toList();
     }
 }

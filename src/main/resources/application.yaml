@@ -1,6 +1,7 @@
 spring:
   application:
     name: emprendeStore
+
   datasource:
     # probar en local
     url: jdbc:mysql://localhost:3306/DB_ES
@@ -10,10 +11,12 @@ spring:
     #url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl-mode=REQUIRED
     #username: ridemofi
     #password: ${DB_PASSWORD}
+
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
   jpa:
     show-sql: true
     hibernate:
@@ -21,14 +24,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    open-in-view: false # OSIV desactivado para API REST
 
   mail:
-    password: ${RESEND_API_KEY}  # Aquí lee la API Key
-    from: onboarding@ridemofi.me # Tu correo verificado
+    password: ${RESEND_API_KEY}  #API Key
+    from: onboarding@ridemofi.me #correo verificado
 
 jwt:
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
   expiration: 86400000
+
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
   api-key: ${CLOUDINARY_API_KEY}

@@ -17,15 +17,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    // Ya no inyectamos JavaMailSender
-
-    // Instanciamos RestTemplate manualmente para evitar conflictos de configuración
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${spring.mail.password}") // Lee la API Key del yaml
+    @Value("${spring.mail.password}")
     private String resendApiKey;
 
-    @Value("${spring.mail.from}") // Lee el correo del yaml
+    @Value("${spring.mail.from}")
     private String fromEmail;
 
     @Async
@@ -34,12 +31,10 @@ public class EmailServiceImpl implements EmailService {
         try {
             String url = "https://api.resend.com/emails";
 
-            // 1. Configurar Headers (Autorización y Tipo de contenido)
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Authorization", "Bearer " + resendApiKey);
 
-            // 2. Preparar el HTML (Tu diseño original)
             String htmlContent = """
                 <!DOCTYPE html>
                 <html>
@@ -76,17 +71,14 @@ public class EmailServiceImpl implements EmailService {
                 </html>
                 """.formatted(nombreUsuario);
 
-            // 3. Crear el Cuerpo del JSON (Mapa de objetos)
             Map<String, Object> body = new HashMap<>();
             body.put("from", "EmprendeStore <" + fromEmail + ">");
             body.put("to", destinatario);
             body.put("subject", "🎁 ¡Bienvenido a EmprendeStore!");
             body.put("html", htmlContent);
 
-            // 4. Empaquetar Petición y Enviar
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-            // Enviamos el POST a Resend
             restTemplate.postForEntity(url, request, String.class);
 
             System.out.println("✅ Correo enviado vía HTTP API a: " + destinatario);

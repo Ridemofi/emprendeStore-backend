@@ -22,6 +22,7 @@ public class AuthMapperImpl implements AuthMapper {
                 .nrocell(e.getNrocellemp())
                 .fechaingreso(e.getFecharegistroemp())
                 .imgemp(e.getImgempre())
+                .saldo(e.getSaldo())
                 .token(token)
                 .rol(e.getRol())
                 .build();

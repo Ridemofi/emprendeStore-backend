@@ -60,6 +60,12 @@ public class Pedido {
     @Column(name = "direccion_snapshot", length = 1000)
     private String direccionSnapshot;
 
+    @Column(name = "empresa_envio", length = 100)
+    private String empresaEnvio;
+
+    @Column(name = "codigo_seguimiento", length = 100)
+    private String codigoSeguimiento;
+
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Venta> ventas = new ArrayList<>();

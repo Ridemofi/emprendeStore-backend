@@ -2,6 +2,7 @@ package com.emprendeStore.web.dto.response;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -17,6 +18,7 @@ public class AuthEmprendedorResponseDto {
     private LocalDate fechaingreso;
     private String token;
     private String rol;
+    private BigDecimal saldo;
     @Builder.Default
     private String tokenType = "Bearer";
 }

@@ -27,7 +27,7 @@ public class VentaMapperImpl implements VentaMapper {
         if (v == null) {
             return null;
         }
-        // Ahora obtenemos los datos globales desde el Pedido padre
+        // obtenemos los datos globales desde el Pedido padre
         return VentaResponseDto.builder()
                 .idVenta(v.getIdVenta())
                 .total(v.getTotal())
@@ -35,6 +35,7 @@ public class VentaMapperImpl implements VentaMapper {
                 .estadoVenta(v.getEstadoVenta())
                 .fechaVenta(v.getPedido().getFechaPedido())
                 .idTransaccion(v.getPedido().getIdTransaccion())
+                .nombreCliente(v.getPedido().getUsuario().getNombReal())
                 .build();
     }
 }

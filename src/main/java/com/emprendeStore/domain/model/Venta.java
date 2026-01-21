@@ -41,12 +41,6 @@ public class Venta {
     @Column(name = "estado_venta", nullable = false, length = 20)
     private EstadoVenta estadoVenta;
 
-    @Column(name = "empresa_envio", length = 100)
-    private String empresaEnvio;
-
-    @Column(name = "codigo_seguimiento", length = 100)
-    private String codigoSeguimiento;
-
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<DetalleVenta> detalles = new ArrayList<>();
