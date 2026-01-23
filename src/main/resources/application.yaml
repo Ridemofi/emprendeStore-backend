@@ -28,10 +28,10 @@ spring:
 
   mail:
     password: ${RESEND_API_KEY}  #API Key
-    from: onboarding@ridemofi.me #correo verificado
+    from: ${MAIL_FROM} #correo verificado
 
 jwt:
-  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  secret: ${JWT_SECRET}
   expiration: 86400000
 
 cloudinary:

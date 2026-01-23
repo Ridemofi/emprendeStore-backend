@@ -1,6 +1,6 @@
 package com.emprendeStore.domain.model;
 
-import com.emprendeStore.domain.Estados.EstadoProducto;
+import com.emprendeStore.domain.enums.EstadoProducto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

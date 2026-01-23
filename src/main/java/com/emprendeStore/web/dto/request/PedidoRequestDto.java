@@ -1,6 +1,6 @@
 package com.emprendeStore.web.dto.request;
 
-import com.emprendeStore.domain.Estados.MetodoPago;
+import com.emprendeStore.domain.enums.MetodoPago;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

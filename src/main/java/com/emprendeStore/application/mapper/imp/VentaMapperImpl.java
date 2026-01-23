@@ -1,7 +1,7 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.VentaMapper;
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.enums.EstadoVenta;
 import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.domain.model.Pedido;
 import com.emprendeStore.domain.model.Venta;

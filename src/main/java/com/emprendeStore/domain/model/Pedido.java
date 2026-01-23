@@ -1,7 +1,7 @@
 package com.emprendeStore.domain.model;
 
-import com.emprendeStore.domain.Estados.EstadoPedido;
-import com.emprendeStore.domain.Estados.MetodoPago;
+import com.emprendeStore.domain.enums.EstadoPedido;
+import com.emprendeStore.domain.enums.MetodoPago;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

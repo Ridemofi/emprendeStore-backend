@@ -1,7 +1,7 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.PedidoMapper;
-import com.emprendeStore.domain.Estados.EstadoPedido;
+import com.emprendeStore.domain.enums.EstadoPedido;
 import com.emprendeStore.domain.model.Pedido;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.request.PedidoRequestDto;

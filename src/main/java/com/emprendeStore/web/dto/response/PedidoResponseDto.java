@@ -1,7 +1,7 @@
 package com.emprendeStore.web.dto.response;
 
-import com.emprendeStore.domain.Estados.EstadoPedido;
-import com.emprendeStore.domain.Estados.MetodoPago;
+import com.emprendeStore.domain.enums.EstadoPedido;
+import com.emprendeStore.domain.enums.MetodoPago;
 import lombok.*;
 
 import java.math.BigDecimal;

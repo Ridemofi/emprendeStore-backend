@@ -3,7 +3,7 @@ package com.emprendeStore.application.service.impl;
 import com.emprendeStore.application.exception.ErrorNegocio;
 import com.emprendeStore.application.mapper.ProductorMapper;
 import com.emprendeStore.application.service.ProductoService;
-import com.emprendeStore.domain.Estados.EstadoProducto;
+import com.emprendeStore.domain.enums.EstadoProducto;
 import com.emprendeStore.domain.model.Carrito;
 import com.emprendeStore.domain.model.Categoria;
 import com.emprendeStore.domain.model.Emprendedor;

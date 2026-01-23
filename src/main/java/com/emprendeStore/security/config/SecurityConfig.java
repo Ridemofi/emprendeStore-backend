@@ -1,6 +1,6 @@
 package com.emprendeStore.security.config;
 
-import com.emprendeStore.security.JwtAuthenticationFilter; // <--- 1. IMPORTA TU FILTRO
+import com.emprendeStore.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +40,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @SuppressWarnings("RedundantThrows")
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @SuppressWarnings({"RedundantThrows", "Convert2MethodRef"})
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

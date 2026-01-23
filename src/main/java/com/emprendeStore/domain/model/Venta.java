@@ -1,6 +1,6 @@
 package com.emprendeStore.domain.model;
 
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.enums.EstadoVenta;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

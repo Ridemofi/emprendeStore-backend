@@ -3,7 +3,7 @@ package com.emprendeStore.application.service.impl;
 import com.emprendeStore.application.mapper.VentaMapper;
 import com.emprendeStore.application.service.DetalleVentaService;
 import com.emprendeStore.application.service.VentaService;
-import com.emprendeStore.domain.Estados.EstadoVenta;
+import com.emprendeStore.domain.enums.EstadoVenta;
 import com.emprendeStore.domain.model.*;
 import com.emprendeStore.domain.repository.EmprendedorRepository;
 import com.emprendeStore.domain.repository.VentaRepository;

@@ -1,6 +1,6 @@
 package com.emprendeStore.domain.repository;
 
-import com.emprendeStore.domain.Estados.EstadoProducto;
+import com.emprendeStore.domain.enums.EstadoProducto;
 import com.emprendeStore.domain.model.Producto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +14,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query("SELECT p FROM Producto p " +
             "JOIN FETCH p.categoria " +
             "LEFT JOIN FETCH p.emprendedor " +
-            "WHERE p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
+            "WHERE p.estadoProducto = com.emprendeStore.domain.enums.EstadoProducto.Disponible " +
             "ORDER BY p.fechaRegistro DESC, p.idProducto DESC")
     List<Producto> findRecienLlegados(Pageable pageable);
 
@@ -23,7 +23,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             "JOIN FETCH p.categoria " +
             "LEFT JOIN FETCH p.emprendedor " +
             "WHERE " +
-            "(p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible OR p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Bajo) AND " +
+            "(p.estadoProducto = com.emprendeStore.domain.enums.EstadoProducto.Disponible OR p.estadoProducto = com.emprendeStore.domain.enums.EstadoProducto.Bajo) AND " +
             "(:texto IS NULL OR p.nombreProd LIKE CONCAT('%', :texto, '%')) AND " +
             "(:idCategoria IS NULL OR p.categoria.idCategoria = :idCategoria) AND " +
             "(:idEmprendedor IS NULL OR p.emprendedor.idempre = :idEmprendedor)")
@@ -61,7 +61,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             "LEFT JOIN FETCH p.emprendedor " +
             "WHERE p.categoria.idCategoria IN :catIds " +
             "AND p.idProducto NOT IN :excludedIds " +
-            "AND p.estadoProducto = com.emprendeStore.domain.Estados.EstadoProducto.Disponible " +
+            "AND p.estadoProducto = com.emprendeStore.domain.enums.EstadoProducto.Disponible " +
             "ORDER BY FUNCTION('RAND')")
     List<Producto> findRecomendaciones(
             @Param("catIds") List<Long> catIds,

@@ -1,4 +1,4 @@
-package com.emprendeStore.domain.Estados;
+package com.emprendeStore.domain.enums;
 
 public enum Rol {
     USUARIO, EMPRENDEDOR
