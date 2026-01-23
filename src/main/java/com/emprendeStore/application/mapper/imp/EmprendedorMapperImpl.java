@@ -1,6 +1,7 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.EmprendedorMapper;
+import com.emprendeStore.domain.enums.Rol;
 import com.emprendeStore.domain.model.Emprendedor;
 import com.emprendeStore.web.dto.request.RegisterEmprendedorRequestDto;
 import com.emprendeStore.web.dto.request.UpdateEmprendedorRequestDto;
@@ -21,6 +22,7 @@ public class EmprendedorMapperImpl implements EmprendedorMapper {
                 .correoemp(dto.getCorreo())
                 .nrocellemp(dto.getNrocell())
                 .passwordempre(dto.getPassword())
+                .rol(Rol.EMPRENDEDOR)
                 .build();
     }
 

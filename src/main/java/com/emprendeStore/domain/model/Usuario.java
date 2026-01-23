@@ -1,5 +1,6 @@
 package com.emprendeStore.domain.model;
 
+import com.emprendeStore.domain.enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,9 +33,9 @@ public class Usuario {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "rol", nullable = false, length = 20)
-    @Builder.Default
-    private String rol = "USUARIO";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Rol rol;
 
     @CreationTimestamp
     @Column(name = "fecha_registro", updatable = false)

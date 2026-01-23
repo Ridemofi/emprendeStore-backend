@@ -25,5 +25,5 @@ echo -e "${GREEN}✅ ¡Subida completada!${NC}"
 echo -e "${YELLOW}⚠️  Ahora conéctate por SSH y reinicia el servidor manualmente.${NC}"
 echo -e "Comandos sugeridos:"
 echo -e "  ssh root@104.131.13.14"
-echo -e "  pkill -f backend.jar; sleep 2; nohup ./start.sh > app.log 2>&1 &"
+echo -e "  pkill -f backend.jar; sleep 2; nohup ./start.sh > app.log 2>&1 &" #START.SH CONTIENE LAS VARIABLES DE ENTORNO
 echo -e "  tail -f app.log"

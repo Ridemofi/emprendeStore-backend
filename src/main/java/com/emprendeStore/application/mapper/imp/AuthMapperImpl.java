@@ -24,7 +24,7 @@ public class AuthMapperImpl implements AuthMapper {
                 .imgemp(e.getImgempre())
                 .saldo(e.getSaldo())
                 .token(token)
-                .rol(e.getRol())
+                .rol(e.getRol().name())
                 .build();
     }
 
@@ -38,7 +38,7 @@ public class AuthMapperImpl implements AuthMapper {
                 .fechaRegistro(u.getFechaRegistro())
                 .img(u.getImagenUsu())
                 .token(token)
-                .rol(u.getRol())
+                .rol(u.getRol().name())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.emprendeStore.domain.model;
 
+import com.emprendeStore.domain.enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,9 +43,9 @@ public class Emprendedor {
     @Column(name = "saldo" , nullable = false)
     private BigDecimal saldo;
 
-    @Column(name = "rol", nullable = false, length = 20)
-    @Builder.Default
-    private String rol = "EMPRENDEDOR";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Rol rol;
 
     @CreationTimestamp
     @Column(name = "fecha_registro", updatable = false)

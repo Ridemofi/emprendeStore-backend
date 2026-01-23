@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Emprendedor emp = emprendedorOpt.get();
             // Asignamos la autoridad (rol) basada en el campo rol de la entidad
             return new User(emp.getCorreoemp(), emp.getPasswordempre(), 
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + emp.getRol())));
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + emp.getRol().name())));
         }
 
         // 2. Intentar buscar como Usuario (solo por correo)
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Usuario usu = usuarioOpt.get();
             // Asignamos la autoridad (rol) basada en el campo rol de la entidad
             return new User(usu.getCorreo(), usu.getPassword(), 
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usu.getRol())));
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usu.getRol().name())));
         }
 
         // 3. Si no se encuentra en ninguno

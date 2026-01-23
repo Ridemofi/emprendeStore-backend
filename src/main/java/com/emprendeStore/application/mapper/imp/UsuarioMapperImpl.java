@@ -1,6 +1,7 @@
 package com.emprendeStore.application.mapper.imp;
 
 import com.emprendeStore.application.mapper.UsuarioMapper;
+import com.emprendeStore.domain.enums.Rol;
 import com.emprendeStore.domain.model.Usuario;
 import com.emprendeStore.web.dto.request.RegisterUsuarioRequestDto;
 import com.emprendeStore.web.dto.request.UpdateUsuarioRequestDto;
@@ -18,6 +19,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
                 .nombReal(dto.getNombreReal())
                 .correo(dto.getCorreo())
                 .password(dto.getPassword())
+                .rol(Rol.USUARIO)
                 .build();
     }
 
