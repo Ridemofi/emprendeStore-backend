@@ -3,7 +3,8 @@ package com.emprendeStore.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "categoria")
@@ -22,5 +23,6 @@ public class Categoria {
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
+    @Builder.Default
+    private Set<Producto> productos = new HashSet<>();
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,7 +153,8 @@ public class CarritoServiceImpl implements CarritoService {
         carritoFiltrado.setIdCarrito(c.getIdCarrito());
         carritoFiltrado.setUsuario(c.getUsuario());
         carritoFiltrado.setFechaCreacion(c.getFechaCreacion());
-        carritoFiltrado.setDetalles(detallesSeleccionados);
+        // Convertimos la lista a Set para asignarla
+        carritoFiltrado.setDetalles(new HashSet<>(detallesSeleccionados));
         return cm.toDto(carritoFiltrado);
     }
 }

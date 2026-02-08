@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,10 +65,10 @@ public class CarritoServiceImplTest {
     void getCarrito_deberiaRetornarDto() {
         // Corrección: Eliminado nomUsu
         Usuario usuario = Usuario.builder().idUsu(1L).correo("jesus@test.com").build();
-        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new ArrayList<>()).build();
+        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new HashSet<>()).build();
         CarritoResponseDto responseEsperado = CarritoResponseDto.builder().idCarrito(1L).build();
 
-        when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
+        when(carritoRepo.findByUsuarioWithDetalles(1L)).thenReturn(Optional.of(carrito));
         when(carritoMapper.toDto(carrito)).thenReturn(responseEsperado);
 
         CarritoResponseDto resultado = carritoServiceImpl.getCarrito(1L);
@@ -79,12 +79,12 @@ public class CarritoServiceImplTest {
     @Test
     void agregarProducto_deberiaAgregarNuevoDetalle() {
         Usuario usuario = Usuario.builder().idUsu(1L).build();
-        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new ArrayList<>()).build();
+        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new HashSet<>()).build();
         Producto producto = Producto.builder().idProducto(10L).precio(BigDecimal.valueOf(100)).build();
 
         CarritoResponseDto responseEsperado = CarritoResponseDto.builder().idCarrito(1L).total(BigDecimal.valueOf(100)).build();
 
-        when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
+        when(carritoRepo.findByUsuarioWithDetalles(1L)).thenReturn(Optional.of(carrito));
         when(productoRepo.findById(10L)).thenReturn(Optional.of(producto));
         when(carritoRepo.save(carrito)).thenReturn(carrito);
         when(carritoMapper.toDto(carrito)).thenReturn(responseEsperado);
@@ -106,30 +106,32 @@ public class CarritoServiceImplTest {
                 .precioUnitario(BigDecimal.valueOf(100))
                 .build();
 
-        when(detalleCarritoRepo.findById(5L)).thenReturn(Optional.of(detalle));
-        when(detalleCarritoRepo.save(detalle)).thenReturn(detalle);
-        when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
+        // Simulamos que la query de actualización devuelve 1 fila afectada
+        when(detalleCarritoRepo.actualizarCantidad(1L, 5L, 3)).thenReturn(1);
+        when(carritoRepo.findByUsuarioWithDetalles(1L)).thenReturn(Optional.of(carrito));
         when(carritoMapper.toDto(carrito)).thenReturn(CarritoResponseDto.builder().idCarrito(1L).build());
 
         CarritoResponseDto resultado = carritoServiceImpl.updateCantidadItem(1L, 5L, 3);
 
-        assertEquals(3, detalle.getCantidad());
+        // Ya no verificamos el objeto detalle porque el mock del repo no lo modifica en memoria
+        // pero verificamos que el flujo llegó al final sin errores
+        verify(detalleCarritoRepo, times(1)).actualizarCantidad(1L, 5L, 3);
     }
 
     @Test
     void removerItem_deberiaEliminarDetalle() {
         Usuario usuario = Usuario.builder().idUsu(1L).build();
-        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new ArrayList<>()).build();
+        Carrito carrito = Carrito.builder().idCarrito(1L).usuario(usuario).detalles(new HashSet<>()).build();
         DetalleCarrito detalle = DetalleCarrito.builder().idDetalleCarrito(5L).carrito(carrito).build();
         carrito.getDetalles().add(detalle);
 
-        when(detalleCarritoRepo.findById(5L)).thenReturn(Optional.of(detalle));
-        when(carritoRepo.findByUsuarioIdUsu(1L)).thenReturn(Optional.of(carrito));
+        // Simulamos borrado exitoso
+        when(detalleCarritoRepo.borrarItemDeUsuario(1L, 5L)).thenReturn(1);
+        when(carritoRepo.findByUsuarioWithDetalles(1L)).thenReturn(Optional.of(carrito));
         when(carritoMapper.toDto(carrito)).thenReturn(CarritoResponseDto.builder().idCarrito(1L).build());
 
         CarritoResponseDto resultado = carritoServiceImpl.removerItem(1L, 5L);
 
-        verify(detalleCarritoRepo, times(1)).delete(detalle);
-        assertTrue(carrito.getDetalles().isEmpty());
+        verify(detalleCarritoRepo, times(1)).borrarItemDeUsuario(1L, 5L);
     }
 }

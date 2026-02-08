@@ -5,8 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "carrito")
@@ -26,5 +26,5 @@ public class Carrito {
     private LocalDateTime fechaCreacion;
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    private List<DetalleCarrito> detalles = new ArrayList<>();
+    private Set<DetalleCarrito> detalles = new HashSet<>();
 }

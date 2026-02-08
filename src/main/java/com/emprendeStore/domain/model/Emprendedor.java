@@ -7,7 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "emprendedor")
@@ -52,5 +53,6 @@ public class Emprendedor {
     private LocalDate fecharegistroemp;
 
     @OneToMany(mappedBy = "emprendedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
+    @Builder.Default
+    private Set<Producto> productos = new HashSet<>();
 }
