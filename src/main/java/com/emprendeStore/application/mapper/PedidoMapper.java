@@ -14,5 +14,5 @@ public interface PedidoMapper {
     // completo con ventas detalladas
     PedidoResponseDto toDto(Pedido pedido, List<VentaResponseDto> ventas);
     // simple para listados (resumen)
-    PedidoResponseDto toDtosimple(Pedido pedido);
+    PedidoResponseDto toDtoResumen(Pedido pedido);
 }

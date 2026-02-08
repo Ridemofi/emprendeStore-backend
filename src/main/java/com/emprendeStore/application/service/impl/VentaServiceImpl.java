@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class VentaServiceImpl implements VentaService {
 
         v.setSubtotal(subtotalVenta);
         v.setTotal(subtotalVenta);
-        v.setDetalles(detallesVenta);
+        v.setDetalles(new HashSet<>(detallesVenta));
         
         emprendedor.setSaldo(emprendedor.getSaldo().add(v.getSubtotal()));
         er.save(emprendedor);

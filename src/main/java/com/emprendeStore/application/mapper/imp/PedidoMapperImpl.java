@@ -45,12 +45,14 @@ public class PedidoMapperImpl implements PedidoMapper {
                 .estadoPedido(pedido.getEstadoPedido())
                 .fechaPedido(pedido.getFechaPedido())
                 .direccionEnvio(pedido.getDireccionSnapshot())
+                .empresaEnvio(pedido.getEmpresaEnvio())
+                .codigoSeguimiento(pedido.getCodigoSeguimiento())
                 .ventas(ventas)
                 .build();
     }
 
     @Override
-    public PedidoResponseDto toDtosimple(Pedido pedido) {
+    public PedidoResponseDto toDtoResumen(Pedido pedido) {
         // Reutilizamos la lógica pasando una lista vacía de ventas
         return toDto(pedido, Collections.emptyList());
     }

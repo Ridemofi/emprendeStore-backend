@@ -81,8 +81,20 @@ public class PedidoServiceImpl implements PedidoService {
     public List<PedidoResponseDto> listarPedidoXidUsuario(Long idUsuario) {
         return peRepo.findAllByUsuario(idUsuario)
                 .stream()
-                .map(pemp::toDtosimple)
+                .map(pemp::toDtoResumen)
                 .toList();
+    }
+
+    @Override
+    public PedidoResponseDto obtenerDetallePedido(Long idPedido) {
+        // Usamos la consulta optimizada con JOIN FETCH
+        Pedido p = peRepo.findByIdWithVentasAndDetalles(idPedido)
+                .orElseThrow(() -> new ErrorNegocio("Pedido no encontrado"));
+        
+        List<VentaResponseDto> ventasDto = p.getVentas().stream()
+                .map(vm::toDto)
+                .toList();
+        return pemp.toDto(p, ventasDto);
     }
 
     private String generarCodigoPedido() {

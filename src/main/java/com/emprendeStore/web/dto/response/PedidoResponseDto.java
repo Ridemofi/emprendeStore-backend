@@ -22,5 +22,7 @@ public class PedidoResponseDto {
     private EstadoPedido estadoPedido;
     private LocalDateTime fechaPedido;
     private String direccionEnvio;
+    private String empresaEnvio;
+    private String codigoSeguimiento;
     private List<VentaResponseDto> ventas;
 }

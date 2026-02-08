@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor @NoArgsConstructor
@@ -28,6 +28,9 @@ public class Venta {
     @JoinColumn(name = "id_empre", nullable = false)
     private Emprendedor emprendedor;
 
+    @Column(name = "nombemp", length = 40)
+    private String nombreEmprendedorSnapshot;
+
     @ColumnDefault("0.00")
     @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
@@ -43,5 +46,5 @@ public class Venta {
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
-    private List<DetalleVenta> detalles = new ArrayList<>();
+    private Set<DetalleVenta> detalles = new HashSet<>();
 }

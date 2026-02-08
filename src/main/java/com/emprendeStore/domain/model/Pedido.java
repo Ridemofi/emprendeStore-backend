@@ -9,8 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor @NoArgsConstructor
@@ -68,5 +68,5 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
-    private List<Venta> ventas = new ArrayList<>();
+    private Set<Venta> ventas = new HashSet<>();
 }

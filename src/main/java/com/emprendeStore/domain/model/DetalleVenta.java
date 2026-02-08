@@ -25,6 +25,9 @@ public class DetalleVenta {
     @JoinColumn(name = "id_pro", nullable = false)
     private Producto producto;
 
+    @Column(name = "imgpro", length = 255)
+    private String imagenProductoSnapshot;
+
     @Column(name = "nombre_producto", nullable = false, length = 150)
     private String nombreProducto;
 

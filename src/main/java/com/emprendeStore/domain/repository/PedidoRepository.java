@@ -17,10 +17,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     // Detalle completo de un pedido específico (para la vista de detalle)
     @Query("SELECT p FROM Pedido p " +
-            "JOIN FETCH p.ventas v " +
-            "JOIN FETCH v.emprendedor e " +
-            "JOIN FETCH v.detalles dv " +
-            "JOIN FETCH dv.producto prod " +
+            "LEFT JOIN FETCH p.ventas v " +
+            "LEFT JOIN FETCH v.detalles d " +
             "WHERE p.idPedido = :idPedido")
-    Optional<Pedido> findByIdWithDetalles(@Param("idPedido") Long idPedido);
+    Optional<Pedido> findByIdWithVentasAndDetalles(@Param("idPedido") Long idPedido);
 }

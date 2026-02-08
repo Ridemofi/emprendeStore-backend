@@ -28,4 +28,9 @@ public class PedidoController {
         return ResponseEntity.ok(ps.listarPedidoXidUsuario(idUsuario));
     }
 
+    @GetMapping("/{idPedido}")
+    public ResponseEntity<PedidoResponseDto> obtenerDetallePedido(@PathVariable Long idPedido) {
+        return ResponseEntity.ok(ps.obtenerDetallePedido(idPedido));
+    }
+
 }
