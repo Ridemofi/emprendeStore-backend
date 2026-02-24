@@ -40,6 +40,18 @@ Este proyecto es el backend de EmprendeStore, una plataforma para la gestión de
    ./mvnw spring-boot:run
    ```
 
+## ⚠️ Variables de entorno necesarias
+Para que el proyecto inicie correctamente, asegúrate de definir las siguientes variables de entorno (por ejemplo, en tu sistema o en el archivo `application.yaml`):
+
+- `DB_URL`: URL de la base de datos
+- `DB_USERNAME`: Usuario de la base de datos
+- `DB_PASSWORD`: Contraseña de la base de datos
+- `JWT_SECRET`: Clave secreta para JWT
+- `RESEND_API_KEY`: API key para el servicio de envío de correos (Resend)
+- `CLOUDINARY_API_KEY`: API key para Cloudinary
+
+Sin estas variables, la aplicación no funcionará correctamente.
+
 ## 🧪 Pruebas
 Para ejecutar las pruebas:
 ```bash
@@ -48,6 +60,11 @@ Para ejecutar las pruebas:
 
 ## 🚢 Despliegue
 Puedes usar los scripts `deploy.sh` o `deploy.ps1` para desplegar el proyecto.
+
+## 🌍 Página desplegada
+Puedes acceder a la versión desplegada del backend en:
+
+[https://ridemofi.me](https://ridemofi.me)
 
 ## 🤝 Contribución
 1. Haz un fork del repositorio.
@@ -59,4 +76,3 @@ Este proyecto está bajo la licencia MIT.
 
 ## 📬 Contacto
 Para dudas o sugerencias, contacta a los administradores del proyecto.
-
