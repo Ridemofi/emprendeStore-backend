@@ -6,7 +6,6 @@ Este proyecto es el backend de EmprendeStore, una plataforma para la gestión de
 - 👤 Gestión de usuarios, productos, ventas, pedidos y ubicaciones.
 - 🔒 Autenticación y autorización con JWT.
 - 🌐 API RESTful para interacción con el frontend.
-- 🧪 Pruebas unitarias y de integración.
 
 ## 🗂️ Estructura del proyecto
 - `src/main/java/com/emprendeStore/`: Código fuente principal.
@@ -15,12 +14,10 @@ Este proyecto es el backend de EmprendeStore, una plataforma para la gestión de
   - `security/`: 🔐 Seguridad y autenticación.
   - `web/`: 🖥️ Controladores y DTOs.
 - `src/main/resources/`: 📄 Archivos de configuración (por ejemplo, `application.yaml`).
-- `src/test/java/com/emprendeStore/`: 🧪 Pruebas unitarias.
 
 ## 📋 Requisitos
-- ☕ Java 17+
+- ☕ Java 21+
 - 🐘 Maven
-- 🐳 (Opcional) Docker para despliegue
 
 ## ⚙️ Instalación
 1. Clona el repositorio:
@@ -52,17 +49,8 @@ Para que el proyecto inicie correctamente, asegúrate de definir las siguientes 
 
 Sin estas variables, la aplicación no funcionará correctamente.
 
-## 🧪 Pruebas
-Para ejecutar las pruebas:
-```bash
-./mvnw test
-```
-
-## 🚢 Despliegue
-Puedes usar los scripts `deploy.sh` o `deploy.ps1` para desplegar el proyecto.
-
 ## 🌍 Página desplegada
-Puedes acceder a la versión desplegada del backend en:
+Puedes ver el funcionamiento del backend junto con el frontend en:
 
 [https://ridemofi.me](https://ridemofi.me)
 
@@ -70,9 +58,6 @@ Puedes acceder a la versión desplegada del backend en:
 1. Haz un fork del repositorio.
 2. Crea una nueva rama para tu feature o fix.
 3. Envía un pull request.
-
-## 📄 Licencia
-Este proyecto está bajo la licencia MIT.
 
 ## 📬 Contacto
 Para dudas o sugerencias, contacta a los administradores del proyecto.
