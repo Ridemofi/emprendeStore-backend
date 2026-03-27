@@ -60,4 +60,4 @@ Puedes ver el funcionamiento del backend junto con el frontend en:
 3. Envía un pull request.
 
 ## 📬 Contacto
-Para dudas o sugerencias, contacta a los administradores del proyecto.
+Para dudas o sugerencias, escríbeme a: ridemofi2006@gmail.com
