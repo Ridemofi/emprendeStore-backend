@@ -48,12 +48,6 @@ Para que el proyecto inicie correctamente, asegúrate de definir las siguientes 
 - `CLOUDINARY_API_KEY`: API key para Cloudinary
 
 Sin estas variables, la aplicación no funcionará correctamente.
-
-## 🌍 Página desplegada
-Puedes ver el funcionamiento del backend junto con el frontend en:
-
-[https://ridemofi.me](https://ridemofi.me)
-
 ## 🤝 Contribución
 1. Haz un fork del repositorio.
 2. Crea una nueva rama para tu feature o fix.
